@@ -1,4 +1,5 @@
 #include <time.h>
+#include<SDL2/SDL.h>
 
 #include "program.h"
 #include "trigmath.h"
@@ -6,9 +7,47 @@
 #include "images.h"
 #include "space.h"
 
+void init(struct Graphics* g)
+{
+	if(SDL_Init(SDL_INIT_VIDEO) < 0) {
+		printf("SDL init failed: %s\n", SDL_GetError());
+		return;
+	}
+
+	printf("initialized SDL\n");
+	
+	g->window = SDL_CreateWindow("n/a", SDL_WINDOWPOS_UNDEFINED, SDL_WINDOWPOS_UNDEFINED, 1280, 720, SDL_WINDOW_SHOWN);
+	if(g->window == NULL) {
+		printf("window could not be created: %s\n", SDL_GetError());
+		return;
+	}
+
+	printf("created window\n");
+	
+	g->window_surface = SDL_GetWindowSurface(g->window);
+
+	printf("got window surface\n");
+}
+
+void deinit(struct Graphics* g)
+{
+	SDL_Delay(10000);
+
+	SDL_DestroyWindow(g->window);
+
+	SDL_Quit();
+}
+
 int main()
 {
+	
+	struct Graphics graphics = {};
+	
+	init(&graphics);
+	
 	struct SpaceGlobals mySpaceGlobals = {};
+	mySpaceGlobals.graphics = &graphics;
+
 	//Flag for restarting the entire game.
 	mySpaceGlobals.restart = 1;
 
@@ -48,8 +87,12 @@ int main()
 	
 	mySpaceGlobals.invalid = 1;
 		
-	while(1)
+	int a = 0;
+	while(a < 50000)
 	{
+		a++;
+//		SDL_Delay(16);
+		
 //		VPADRead(0, &vpad_data, 1, &error);
 		
 		//Get the status of the gamepad
@@ -125,4 +168,6 @@ int main()
 		}
 
 	}
+	
+	deinit(&graphics);
 }

@@ -12,7 +12,14 @@
 #define BUTTON_A 7
 #define BUTTON_B 8
 
+#include <SDL2/SDL.h>
+
 //Using modified version of draw to render at twice the scale to improve framerate
+
+struct Graphics {
+	SDL_Window* window;
+	SDL_Surface* window_surface;
+};
 
 struct Bullet {
 	int x;
@@ -102,6 +109,8 @@ struct SpaceGlobals{
 	
 	int displayHowToPlay;
 	int firstShotFired;
+	
+	struct Graphics* graphics;
 
 };
 #endif

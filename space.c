@@ -25,9 +25,9 @@ pong example, but also I believe necesary since global variables don't seem to b
 #define yMinBoundry 0
 #define yMaxBoundry 240
 
-void blackout()
+void blackout(struct Graphics* g)
 {
-	fillScreen(0,0,0,0);
+	fillScreen(g, 0,0,0,0);
 }
 
 void increaseScore(struct SpaceGlobals* mySpaceGlobals, int inc)
@@ -347,7 +347,7 @@ void renderEnemies(struct SpaceGlobals *mySpaceGlobals)
 			int z, za;
 			for (z=0; z<4; z++)
 				for (za=0; za<2; za++)
-					drawPixel(mySpaceGlobals->bullets[x].x + z, mySpaceGlobals->bullets[x].y + za, 255, 0, 0);
+					drawPixel(mySpaceGlobals->graphics, mySpaceGlobals->bullets[x].x + z, mySpaceGlobals->bullets[x].y + za, 255, 0, 0);
 		}
 	}
 	
@@ -356,7 +356,7 @@ void renderEnemies(struct SpaceGlobals *mySpaceGlobals)
 	{
 		if (mySpaceGlobals->enemies[x].position.active >= 1)
 		{
-			drawBitmap(mySpaceGlobals->enemies[x].position.x, mySpaceGlobals->enemies[x].position.y, 23, 23, mySpaceGlobals->enemies[x].rotated_sprite, enemy_palette);
+			drawBitmap(mySpaceGlobals->graphics, mySpaceGlobals->enemies[x].position.x, mySpaceGlobals->enemies[x].position.y, 23, 23, mySpaceGlobals->enemies[x].rotated_sprite, enemy_palette);
 		}
 	}
 }
@@ -365,7 +365,7 @@ void render(struct SpaceGlobals *mySpaceGlobals)
 {
 	if (mySpaceGlobals->invalid == 1)
 	{
-		blackout();
+		blackout(mySpaceGlobals->graphics);
 
 		mySpaceGlobals->frame++;
 
@@ -379,7 +379,7 @@ void render(struct SpaceGlobals *mySpaceGlobals)
 		renderShip(mySpaceGlobals);
 		renderTexts(mySpaceGlobals);
 
-		flipBuffers();
+		flipBuffers(mySpaceGlobals->graphics);
 		mySpaceGlobals->invalid = 0;
 	}
 }
@@ -489,7 +489,7 @@ void moveBullets(struct SpaceGlobals *mySpaceGlobals)
 					
 void renderTexts(struct SpaceGlobals *mySpaceGlobals)
 {
-	fillRect(0, 0, xMaxBoundry, 20, 0, 0, 0);
+	fillRect(mySpaceGlobals->graphics, 0, 0, xMaxBoundry, 20, 0, 0, 0);
 
 	char score[255];
 	if (mySpaceGlobals->dontKeepTrackOfScore == 1)
@@ -527,7 +527,7 @@ void renderShip(struct SpaceGlobals *mySpaceGlobals)
 	if (mySpaceGlobals->playerExplodeFrame < 2)
 		makeRotationMatrix(mySpaceGlobals->angle, 36, mySpaceGlobals->orig_ship, mySpaceGlobals->rotated_ship, mySpaceGlobals->transIndex);
 
-	drawBitmap(posx, posy, 36, 36, mySpaceGlobals->rotated_ship, mySpaceGlobals->curPalette);
+	drawBitmap(mySpaceGlobals->graphics, posx, posy, 36, 36, mySpaceGlobals->rotated_ship, mySpaceGlobals->curPalette);
 
 }
 
@@ -537,7 +537,7 @@ void renderStars(struct SpaceGlobals *mySpaceGlobals)
 	if (mySpaceGlobals->lives == 1 && mySpaceGlobals->playerExplodeFrame > 1)
 		return;
 	
-	drawPixels(mySpaceGlobals->stars);
+	drawPixels(mySpaceGlobals->graphics, mySpaceGlobals->stars);
 }
 
 //Reset the game
@@ -593,13 +593,13 @@ void displayTitle(struct SpaceGlobals * mySpaceGlobals)
 {
 	if (mySpaceGlobals->invalid == 1)
 	{
-		blackout();
+		blackout(mySpaceGlobals->graphics);
 		
 		// draw some stars
 		renderStars(mySpaceGlobals);
 
 		// display the bitmap in upper center screen
-		drawBitmap(107, 30, 200, 100, mySpaceGlobals->title, title_palette);
+		drawBitmap(mySpaceGlobals->graphics, 107, 30, 200, 100, mySpaceGlobals->title, title_palette);
 
 		char credits[255];
 		snprintf(credits, 255, "by vgmoose");
@@ -630,7 +630,7 @@ void displayTitle(struct SpaceGlobals * mySpaceGlobals)
 		
 		drawMenuCursor(mySpaceGlobals);
 		
-		flipBuffers();
+		flipBuffers(mySpaceGlobals->graphics);
 		mySpaceGlobals->invalid = 0;
 	}
 
@@ -746,7 +746,7 @@ void displayPause(struct SpaceGlobals * mySpaceGlobals)
 {
 	if (mySpaceGlobals->invalid == 1)
 	{
-		blackout();
+		blackout(mySpaceGlobals->graphics);
 
 		// display the password here
 		char resume[255];
@@ -761,7 +761,7 @@ void displayPause(struct SpaceGlobals * mySpaceGlobals)
 		
 		drawMenuCursor(mySpaceGlobals);
 		
-		flipBuffers();
+		flipBuffers(mySpaceGlobals->graphics);
 		mySpaceGlobals->invalid = 0;
 	}
 }
@@ -861,7 +861,7 @@ void displayPasswordScreen(struct SpaceGlobals * mySpaceGlobals)
 {
 	if (mySpaceGlobals->invalid == 1)
 	{
-		blackout();
+		blackout(mySpaceGlobals->graphics);
 		
 //		drawPasswordMenuCursor(mySpaceGlobals);
 		char password[255];
@@ -883,7 +883,7 @@ void displayPasswordScreen(struct SpaceGlobals * mySpaceGlobals)
 		drawString(32 + mySpaceGlobals->menuChoice, 9, down_cur);
 		drawStringTv(51 + mySpaceGlobals->menuChoice, 15, down_cur);
 		
-		flipBuffers();
+		flipBuffers(mySpaceGlobals->graphics);
 		mySpaceGlobals->invalid = 0;
 	}
 }
@@ -980,7 +980,7 @@ void displayGameOver(struct SpaceGlobals *mySpaceGlobals)
 {
 	if (mySpaceGlobals->invalid == 1)
 	{
-		blackout();
+		blackout(mySpaceGlobals->graphics);
 				
 		char gameover[255];
 		snprintf(gameover, 255, "Game Over!");
@@ -1014,10 +1014,10 @@ void displayGameOver(struct SpaceGlobals *mySpaceGlobals)
 		
 		drawMenuCursor(mySpaceGlobals);
 		
-		flipBuffers();
+		flipBuffers(mySpaceGlobals->graphics);
 		mySpaceGlobals->invalid = 0;
 	}
-	blackout();
+	blackout(mySpaceGlobals->graphics);
 	
 	
 	
@@ -1109,7 +1109,7 @@ void tryPassword(struct SpaceGlobals *mySpaceGlobals)
 	// start installer for Hykem's IOSU Exploit
 	if (mySpaceGlobals->passwordEntered == 41666)
 	{
-		blackout();
+		blackout(mySpaceGlobals->graphics);
 //		OSFatal("Installing IOSU Exploit... This may take a while.");
 	}
 	
