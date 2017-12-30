@@ -521,10 +521,10 @@ void renderShip(struct SpaceGlobals *mySpaceGlobals)
 	const int posx = (int)mySpaceGlobals->p1X;
 	const int posy = (int)mySpaceGlobals->p1Y;
 	
-//	if (mySpaceGlobals->playerExplodeFrame < 2)
-//		makeRotationMatrix(mySpaceGlobals->angle, 36, mySpaceGlobals->orig_ship, mySpaceGlobals->rotated_ship, mySpaceGlobals->transIndex);
+	if (mySpaceGlobals->playerExplodeFrame < 2)
+		makeRotationMatrix(mySpaceGlobals->angle, 36, orig_ship, rotated_ship, mySpaceGlobals->transIndex);
 
-//	drawBitmap(mySpaceGlobals->graphics, posx, posy, 36, 36, mySpaceGlobals->rotated_ship, mySpaceGlobals->curPalette);
+	drawBitmap(mySpaceGlobals->graphics, posx, posy, 36, 36, rotated_ship, mySpaceGlobals->curPalette);
 
 }
 
@@ -555,9 +555,9 @@ void initGameState(struct SpaceGlobals *mySpaceGlobals)
 //		mySpaceGlobals->bullets[x].active = 0;
 //	}
 //	
-//	// init x and y pos of player
-////	mySpaceGlobals->p1X =  40;
-////	mySpaceGlobals->p1Y = 150;
+	// init x and y pos of player
+	mySpaceGlobals->p1X =  40;
+	mySpaceGlobals->p1Y = 150;
 //	
 //	// init enemies
 //	for (x=0; x<100; x++)
@@ -649,6 +649,12 @@ void doMenuAction(struct SpaceGlobals *mySpaceGlobals)
 	if (!(mySpaceGlobals->button & BUTTON_A))
 	{
 		mySpaceGlobals->allowInput = 1;
+	}
+
+	// title screen and B was pressed, exit fully
+	if (mySpaceGlobals->state == 1 && mySpaceGlobals->button & BUTTON_B)
+	{
+		mySpaceGlobals->quit = 1;
 	}
 	
 	if (mySpaceGlobals->button & BUTTON_A && mySpaceGlobals->allowInput)
@@ -748,8 +754,8 @@ void displayPause(struct SpaceGlobals * mySpaceGlobals)
 		char quit[255];
 		snprintf(quit, 255, "Quit");
 		
-		drawString(mySpaceGlobals->graphics, 27, 12, resume);
-		drawString(mySpaceGlobals->graphics, 28, 13, quit);
+		drawString(mySpaceGlobals->graphics, 27, 13, resume);
+		drawString(mySpaceGlobals->graphics, 28, 14, quit);
 		
 		drawMenuCursor(mySpaceGlobals);
 		

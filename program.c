@@ -79,14 +79,15 @@ int main(int argc, char *argv[])
 	
 	// decompress compressed things into their arrays, final argument is the transparent color in their palette
 	decompress_sprite(3061, 200, 100, compressed_title, title, 39);
-//	decompress_sprite(511, 36, 36, compressed_ship, mySpaceGlobals.orig_ship, 14);
+	decompress_sprite(511, 36, 36, compressed_ship, orig_ship, 14);
 //	decompress_sprite(206, 23, 23, compressed_enemy, mySpaceGlobals.enemy, 9);
 	
 	// setup palette and transparent index
-//	mySpaceGlobals.curPalette = ship_palette;
+	mySpaceGlobals.curPalette = ship_palette;
 	mySpaceGlobals.transIndex = 14;
     
     mySpaceGlobals.passwordEntered = 0;
+	mySpaceGlobals.quit = 0;
 	
 	// initialize starfield for this game
 	initStars(&mySpaceGlobals);
@@ -95,7 +96,7 @@ int main(int argc, char *argv[])
 	printf("About to enter main loop\n");
 		
 	int a = 0;
-	while(a < 1000)
+	while(!mySpaceGlobals.quit)
 	{
 		a++;
 		SDL_Delay(16);
@@ -169,7 +170,7 @@ int main(int argc, char *argv[])
 			checkPause(&mySpaceGlobals);
 		}
 		//To exit the game
-		if (mySpaceGlobals.button & BUTTON_HOME)
+		if (mySpaceGlobals.button & BUTTON_MINUS)
 		{
 			break;
 		}

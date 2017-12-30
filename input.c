@@ -37,8 +37,11 @@ void PADRead(struct PADData* data)
 			data->btns_h |= ((event.key.keysym.sym == SDLK_BACKSPACE)?		BUTTON_B : 0);
 			data->btns_h |= ((event.key.keysym.sym == SDLK_UP)?		BUTTON_UP : 0);
 			data->btns_h |= ((event.key.keysym.sym == SDLK_DOWN)?		BUTTON_DOWN : 0);
+			data->btns_h |= ((event.key.keysym.sym == SDLK_LEFT)?		BUTTON_LEFT : 0);
+			data->btns_h |= ((event.key.keysym.sym == SDLK_RIGHT)?		BUTTON_RIGHT : 0);
+			data->btns_h |= ((event.key.keysym.sym == SDLK_SPACE)?		BUTTON_PLUS : 0);
+			data->btns_h |= ((event.key.keysym.sym == SDLK_DELETE)?		BUTTON_MINUS : 0);
 			
-//			printf("%x\n", data->btns_h);
 		}
 	#else // switch
 
@@ -48,12 +51,14 @@ void PADRead(struct PADData* data)
 		hid_controller_state_entry_t ent = num8->main.entries[num8->main.latest_idx];
 
 		// process inputs
-		data->btns_h |= ((ent.button_state & JOYPAD_A)? 	BUTTON_A : 0);
-		data->btns_h |= ((ent.button_state & JOYPAD_B)? 	BUTTON_B : 0);
-		data->btns_h |= ((ent.button_state & JOYPAD_UP)? 	BUTTON_UP : 0);
-		data->btns_h |= ((ent.button_state & JOYPAD_DOWN)? 	BUTTON_DOWN : 0);
+		data->btns_h |= ((ent.button_state & JOYPAD_A)? 		BUTTON_A : 0);
+		data->btns_h |= ((ent.button_state & JOYPAD_B)? 		BUTTON_B : 0);
+		data->btns_h |= ((ent.button_state & JOYPAD_UP)? 		BUTTON_UP : 0);
+		data->btns_h |= ((ent.button_state & JOYPAD_DOWN)? 		BUTTON_DOWN : 0);
+		data->btns_h |= ((ent.button_state & JOYPAD_LEFT)? 		BUTTON_LEFT : 0);
+		data->btns_h |= ((ent.button_state & JOYPAD_RIGHT)?		BUTTON_RIGHT : 0);
+		data->btns_h |= ((ent.button_state & JOYPAD_START)?		BUTTON_PLUS : 0);
+		data->btns_h |= ((ent.button_state & JOYPAD_SELECT)?	BUTTON_MINUS : 0);
 
-	if (data->btns_h != 0)
-		printf("%x\n", data->btns_h);
 	#endif
 }

@@ -33,6 +33,8 @@ struct Pixel {
 };
 
 unsigned char title[100][200];
+unsigned char rotated_ship[36][36];
+unsigned char orig_ship[36][36];
 
 //Struct for global variables for pong
 struct SpaceGlobals{
@@ -44,9 +46,7 @@ struct SpaceGlobals{
 	
 	unsigned int seed;
 	
-//	unsigned char rotated_ship[36][36];
-//	unsigned char orig_ship[36][36];
-//	const unsigned char (*curPalette)[3];
+	const unsigned char (*curPalette)[3];
 //	unsigned char enemy[23][23];
 	
 	int passwordList[100];
@@ -99,6 +99,8 @@ struct SpaceGlobals{
 	
 	int displayHowToPlay;
 	int firstShotFired;
+	
+	int quit;
 	
 	struct Graphics* graphics;
 
