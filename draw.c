@@ -2,6 +2,9 @@
 #include "space.h"
 #include "program.h"
 
+#define SCREEN_X 1280
+#define s 720
+
 void flipBuffers(struct Graphics* g)
 {
         SDL_UpdateWindowSurface(g->window);
@@ -25,12 +28,12 @@ void putAPixel(struct Graphics* gr, int x, int y, int r, int g, int b)
 			for (az=0; az<2; az++)
 			{
 				SDL_Rect rect;
-				rect.x = x;
-				rect.y = y;
-				rect.w = 2;
-				rect.h = 2;
+				rect.x = x*1.5;
+				rect.y = y*1.5;
+				rect.w = 3;
+				rect.h = 3;
 
-				SDL_FillRect(gr->window_surface, &rect, SDL_MapRGBA(gr->window_surface->format, r, g, b, 0xFF));
+				SDL_FillRect(gr->window_surface, &rect, SDL_MapRGBA(gr->window_surface->format, b, g, r, 0xFF));
 			}
 }
 
@@ -47,7 +50,8 @@ void drawStringTv(int x, int y, char * string)
 
 void fillScreen(struct Graphics* gr, char r,char g,char b,char a)
 {	
-	SDL_FillRect(gr->window_surface, NULL, SDL_MapRGBA(gr->window_surface->format, r, g, b, a));
+	printf("SDL thing\n");
+	SDL_FillRect(gr->window_surface, NULL, SDL_MapRGBA(gr->window_surface->format, b, g, r, a));
 }
 
 // draw black rect all at once
