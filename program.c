@@ -6,6 +6,7 @@
 #include "draw.h"
 #include "images.h"
 #include "space.h"
+#include "input.h"
 
 void init(struct Graphics* g)
 {
@@ -31,7 +32,7 @@ void init(struct Graphics* g)
 
 void deinit(struct Graphics* g)
 {
-	SDL_Delay(10000);
+	SDL_Delay(10);
 
 	SDL_DestroyWindow(g->window);
 
@@ -45,6 +46,7 @@ int main(int argc, char *argv[])
 	
 	printf("Going for graphics\n");
 	init(&graphics);
+	PADInit();
 	printf("Graphics initialized\n");
 	
 	struct SpaceGlobals mySpaceGlobals = {};
@@ -73,11 +75,10 @@ int main(int argc, char *argv[])
 	mySpaceGlobals.seed = time(0);
 	printf("Set the time!\n");
 	
-	int error;
-//	VPADData vpad_data;
+	struct PADData pad_data;
 	
 	// decompress compressed things into their arrays, final argument is the transparent color in their palette
-	decompress_sprite(3061, 200, 100, compressed_title, mySpaceGlobals.title, 39);
+	decompress_sprite(3061, 200, 100, compressed_title, title, 39);
 //	decompress_sprite(511, 36, 36, compressed_ship, mySpaceGlobals.orig_ship, 14);
 //	decompress_sprite(206, 23, 23, compressed_enemy, mySpaceGlobals.enemy, 9);
 	
@@ -93,97 +94,90 @@ int main(int argc, char *argv[])
 	mySpaceGlobals.invalid = 1;
 	printf("About to enter main loop\n");
 		
-//	int a = 0;
-//	while(a < 50000)
-//	{
-//		a++;
-////		SDL_Delay(16);
-//		
-////		VPADRead(0, &vpad_data, 1, &error);
-//		
-//		//Get the status of the gamepad
-////		mySpaceGlobals.button = vpad_data.btns_h;
-////		
-////		mySpaceGlobals.rstick = vpad_data.rstick;
-////		mySpaceGlobals.lstick = vpad_data.lstick;
-////		
-////		mySpaceGlobals.touched = vpad_data.tpdata.touched;
-//		if (mySpaceGlobals.touched == 1)
-//		{
-////			mySpaceGlobals.touchX = ((vpad_data.tpdata.x / 9) - 11);
-////			mySpaceGlobals.touchY = ((3930 - vpad_data.tpdata.y) / 16);
-//		}
-//		printf("Did one if\n");
-//
-//		
-//		if (mySpaceGlobals.restart == 1)
-//		{
-//			reset(&mySpaceGlobals);
-//			mySpaceGlobals.restart = 0;
-//		}
-//		
-//		printf("Did one if\n");
-//		
-//		if (mySpaceGlobals.state == 1) // title screen
-//		{
-////			printf("About to display title screen\n");
+	int a = 0;
+	while(a < 1000)
+	{
+		a++;
+		SDL_Delay(16);
+		
+		PADRead(&pad_data);
+		
+		//Get the status of the controller
+		mySpaceGlobals.button = pad_data.btns_h;
+		
+//		mySpaceGlobals.rstick_x = pad_data.rstick;
+//		mySpaceGlobals.lstick_x = pad_data.lstick;
+		
+//		mySpaceGlobals.touched = vpad_data.tpdata.touched;
+		if (mySpaceGlobals.touched == 1)
+		{
+//			mySpaceGlobals.touchX = ((vpad_data.tpdata.x / 9) - 11);
+//			mySpaceGlobals.touchY = ((3930 - vpad_data.tpdata.y) / 16);
+		}
+		
+		if (mySpaceGlobals.restart == 1)
+		{
+			reset(&mySpaceGlobals);
+			mySpaceGlobals.restart = 0;
+		}
+				
+		if (mySpaceGlobals.state == 1) // title screen
+		{
 			displayTitle(&mySpaceGlobals);
-////			printf("menu action\n");
-////			doMenuAction(&mySpaceGlobals);
-////			printf("done with this\n");
-//		}
-//		else if (mySpaceGlobals.state == 2) // password screen
-//		{
-//			displayPasswordScreen(&mySpaceGlobals);
-//			doPasswordMenuAction(&mySpaceGlobals);
-//		}
-//		else if (mySpaceGlobals.state == 3) // pause screen
-//		{
-//			displayPause(&mySpaceGlobals);
-//			doMenuAction(&mySpaceGlobals);
-//		}
-//		else if  (mySpaceGlobals.state == 4) // game over screen
-//		{
-//			displayGameOver(&mySpaceGlobals);
-//			doMenuAction(&mySpaceGlobals);
-//		}
-//		else 	// game play
-//		{
-//			//Update location of player1 and 2 paddles
-//			p1Move(&mySpaceGlobals);
-//
-//			// perform any shooting
-//			p1Shoot(&mySpaceGlobals);
-//			
-//			// handle any collisions
-//			handleCollisions(&mySpaceGlobals);
-//			
-//			// do explosions
-//			handleExplosions(&mySpaceGlobals);
-//			
-//			// if we're out of lives, break
-//			if (mySpaceGlobals.lives <= 0 && mySpaceGlobals.state == 4)
-//				continue;
-//			
-//			// add any new enemies
-//			addNewEnemies(&mySpaceGlobals);
-//			
-//			//Render the scene
-//			render(&mySpaceGlobals);
-//			
-//			// check for pausing
-//			checkPause(&mySpaceGlobals);
-//		}
-//		//To exit the game
-//		if (mySpaceGlobals.button & BUTTON_HOME)
-//		{
-//			break;
-//		}
-//		printf("I'm out\n");
-//
-//	}
+			doMenuAction(&mySpaceGlobals);
+		}
+		else if (mySpaceGlobals.state == 2) // password screen
+		{
+			displayPasswordScreen(&mySpaceGlobals);
+			doPasswordMenuAction(&mySpaceGlobals);
+		}
+		else if (mySpaceGlobals.state == 3) // pause screen
+		{
+			displayPause(&mySpaceGlobals);
+			doMenuAction(&mySpaceGlobals);
+		}
+		else if  (mySpaceGlobals.state == 4) // game over screen
+		{
+			displayGameOver(&mySpaceGlobals);
+			doMenuAction(&mySpaceGlobals);
+		}
+		else 	// game play
+		{
+			//Update location of player1 and 2 paddles
+			p1Move(&mySpaceGlobals);
+
+			// perform any shooting
+			p1Shoot(&mySpaceGlobals);
+			
+			// handle any collisions
+			handleCollisions(&mySpaceGlobals);
+			
+			// do explosions
+			handleExplosions(&mySpaceGlobals);
+			
+			// if we're out of lives, break
+			if (mySpaceGlobals.lives <= 0 && mySpaceGlobals.state == 4)
+				continue;
+			
+			// add any new enemies
+			addNewEnemies(&mySpaceGlobals);
+			
+			//Render the scene
+			render(&mySpaceGlobals);
+			
+			// check for pausing
+			checkPause(&mySpaceGlobals);
+		}
+		//To exit the game
+		if (mySpaceGlobals.button & BUTTON_HOME)
+		{
+			break;
+		}
+
+	}
 	
 	printf("Unloading\n");
 	deinit(&graphics);
+	PADDestroy();
 	printf("Unloaded\n");
 }

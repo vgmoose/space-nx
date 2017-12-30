@@ -1,17 +1,6 @@
 #ifndef PROGRAM_H
 #define PROGRAM_H
 
-#define BUTTON_LEFT 1
-#define BUTTON_RIGHT 2
-#define BUTTON_UP 3
-#define BUTTON_DOWN 4
-
-#define BUTTON_HOME 5
-#define BUTTON_PLUS 6
-
-#define BUTTON_A 7
-#define BUTTON_B 8
-
 #include <SDL2/SDL.h>
 
 //Using modified version of draw to render at twice the scale to improve framerate
@@ -43,6 +32,8 @@ struct Pixel {
 	int b;
 };
 
+unsigned char title[100][200];
+
 //Struct for global variables for pong
 struct SpaceGlobals{
 	//Flag for restarting the entire game.
@@ -57,7 +48,6 @@ struct SpaceGlobals{
 //	unsigned char orig_ship[36][36];
 //	const unsigned char (*curPalette)[3];
 //	unsigned char enemy[23][23];
-	unsigned char title[100][200];
 	
 	int passwordList[100];
 	int playerExplodeFrame;

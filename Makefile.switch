@@ -3,7 +3,7 @@ $(error "Please set LIBTRANSISTOR_HOME in your environment. export LIBTRANSISTOR
 endif
 
 PROGRAM := spacenx
-OBJ := draw.o space.o program.o trigmath.o images.o
+OBJ := draw.o space.o program.o trigmath.o images.o input.o
 
 include $(LIBTRANSISTOR_HOME)/libtransistor.mk
 

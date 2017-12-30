@@ -3,6 +3,7 @@
 #include "program.h"
 #include "space.h"
 #include "trigmath.h"
+#include "input.h"
 
 /**
 This class is a bit of a mess, but it basically does "everything else" in the game.
@@ -587,8 +588,8 @@ void initStars(struct SpaceGlobals *mySpaceGlobals)
 
 void displayTitle(struct SpaceGlobals * mySpaceGlobals)
 {
-//	if (mySpaceGlobals->invalid == 1)
-//	{
+	if (mySpaceGlobals->invalid == 1)
+	{
 		printf("Blacking out\n");
 		blackout(mySpaceGlobals->graphics);
 		
@@ -598,7 +599,7 @@ void displayTitle(struct SpaceGlobals * mySpaceGlobals)
 		printf("Drawing \"text\"\n");
 	
 		// display the bitmap in upper center screen
-		drawBitmap(mySpaceGlobals->graphics, 107, 30, 200, 100, mySpaceGlobals->title, title_palette);
+		drawBitmap(mySpaceGlobals->graphics, 107, 30, 200, 100, title, title_palette);
 	
 		char credits[255];
 		snprintf(credits, 255, "by vgmoose");
@@ -614,8 +615,6 @@ void displayTitle(struct SpaceGlobals * mySpaceGlobals)
 		char password[255];
 		snprintf(password, 255, "Password");
 		
-		printf("Done with text\n");
-
 		//display the menu under it
 		drawString(mySpaceGlobals->graphics, 37, 10, credits);
 		drawString(mySpaceGlobals->graphics, 25, 13, play);
@@ -623,16 +622,12 @@ void displayTitle(struct SpaceGlobals * mySpaceGlobals)
 
 //		drawString(mySpaceGlobals->graphics, 45, 17, musiccredits);
 		drawString(mySpaceGlobals->graphics, 0, 17, license);
-//		
-		printf("Done with text\n");
-		
+			
 		drawMenuCursor(mySpaceGlobals);
-		
-		printf("Done with text\n");
-		
+				
 		flipBuffers(mySpaceGlobals->graphics);
 		mySpaceGlobals->invalid = 0;
-//	}
+	}
 
 }
 
@@ -983,7 +978,7 @@ void displayGameOver(struct SpaceGlobals *mySpaceGlobals)
 		if (mySpaceGlobals->dontKeepTrackOfScore != 1)
 		{
 			char finalscore[255];
-			snprintf(mySpaceGlobals->graphics, finalscore, 255, "Score: %08d", mySpaceGlobals->score);
+			snprintf(finalscore, 255, "Score: %08d", mySpaceGlobals->score);
 			char pass[255];
 			snprintf(pass, 255, "Lv %d Password: %05d", mySpaceGlobals->level+1, mySpaceGlobals->passwordList[mySpaceGlobals->level]);
 
