@@ -1,6 +1,7 @@
 #include "draw.h"
 #include "space.h"
 #include "program.h"
+#include "font.h"
 
 #define SCREEN_X 1280
 #define s 720
@@ -37,15 +38,34 @@ void putAPixel(struct Graphics* gr, int x, int y, int r, int g, int b)
 			}
 }
 
-void drawString(int x, int y, char * string)
+void drawString(struct Graphics* g, int xi, int yi, char * string)
 {
-	//OSScreenPutFontEx(0, x, y, string);
-//	OSScreenPutFontEx(1, x, y, string);
-}
-
-void drawStringTv(int x, int y, char * string)
-{
-//	OSScreenPutFontEx(0, x, y, string);
+	// for every character in the string, if it's within range, render it at the current position
+	// and move over 8 characters
+	
+	xi *= 6.25;
+	yi *= 13;
+	
+	char next = -1;
+	int i = 0;
+	while (next != '\0')
+	{
+		next = string[i++];
+		
+		// actually draw this char pixel by pixel, if it's within range
+		if (next >= 0 && next < 128)
+		{
+			char* bitmap = font[next];
+			int x, y;
+			for (x=0; x < 8; x++) {
+				for (y=0; y < 8; y++) {
+					if (bitmap[x] & 1 << y)
+						putAPixel(g, xi+y+i*8, yi+x, 0xff, 0xff, 0xff);
+				}
+				printf("\n");
+			}
+		}
+	}
 }
 
 void fillScreen(struct Graphics* gr, char r,char g,char b,char a)

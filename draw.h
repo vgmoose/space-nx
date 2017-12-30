@@ -4,10 +4,9 @@
 
 // //! C wrapper for out C++ functions
 //Function declarations for my graphics library
-void flipBuffers();
+void flipBuffers(struct Graphics* g);
 void fillScreen(struct Graphics* gr, char r, char g, char b, char a);
-void drawString(int x, int y, char * string);
-void drawStringTv(int x, int y, char * string);
+void drawString(struct Graphics* g, int x, int y, char * string);
 void drawRect(struct Graphics* gr, int x1, int y1, int x2, int y2, char r, char g, char b, char a);
 void drawPixel(struct Graphics* gr, int x, int y, char r, char g, char b);
 
