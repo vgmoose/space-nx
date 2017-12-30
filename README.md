@@ -11,10 +11,10 @@ git clone --recursive -b graphics-experimental-fs https://github.com/reswitched/
 cd libtransistor
 make
 cd ..
-``
+```
 
 Then export an environment variable pointing to your libtransistor build, and run `make switch`:
-``
+```
 export LIBTRANSISTOR_HOME=./libtransistor
 make switch
 ```
@@ -34,3 +34,4 @@ make run
 
 ### License
 This program is licensed under [the MIT license](https://opensource.org/licenses/MIT), see the original repo for more information.
+
