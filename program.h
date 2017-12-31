@@ -10,13 +10,13 @@ struct Graphics {
 	SDL_Surface* window_surface;
 };
 
-//struct Bullet {
-//	int x;
-//	int y;
-//	float m_x;
-//	float m_y;
-//	int active;
-//};
+struct Bullet {
+	int x;
+	int y;
+	float m_x;
+	float m_y;
+	int active;
+};
 
 //struct Enemy {
 //	float angle;
@@ -67,8 +67,8 @@ struct SpaceGlobals{
 	float lstick_x, lstick_y, rstick_x, rstick_y;	
 	
 	// only 20 bullets can be onscreen at a time
-//	struct Bullet bullets[20];
-//	
+	struct Bullet bullets[20];
+	
 //	// the locations of the 200 random stars
 	struct Pixel stars[200];
 	

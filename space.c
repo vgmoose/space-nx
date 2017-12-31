@@ -53,44 +53,41 @@ void p1Shoot(struct SpaceGlobals * mySpaceGlobals)
 {
 	if (mySpaceGlobals->playerExplodeFrame > 1)
 		return;
-		
-//	float sensitivity = 0.1f;
-//				
-//	float xdif = 0;
-//	float ydif = 0;
+				
+	float xdif = 0;
+	float ydif = 0;
 	
-	if (mySpaceGlobals->touched)
-//	if ((fabs(mySpaceGlobals->rstick.x) > sensitivity) || (fabs(mySpaceGlobals->rstick.y) > sensitivity))
+//	if ((my_fabs(mySpaceGlobals->rstick_x) > sensitivity) || (my_fabs(mySpaceGlobals->rstick_y) > sensitivity))
+//	{
+//	if (my_fabs(mySpaceGlobals->rstick_x) > sensitivity)
+		xdif = mySpaceGlobals->p1X - (mySpaceGlobals->p1X + (mySpaceGlobals->rstick_x * 18));
+//	if (my_fabs(mySpaceGlobals->rstick_y) > sensitivity)
+		ydif = mySpaceGlobals->p1Y - (mySpaceGlobals->p1Y - (mySpaceGlobals->rstick_y * 18));
+	
+	if (xdif == 0 || ydif == 0) return;
+	
+	mySpaceGlobals->angle = my_atan2(xdif, ydif);
+
+	// shoot a bullet
+	// find an inactive bullet
+	float theta = mySpaceGlobals->angle - 3.14159265;
+	int xx;
+	for (xx=0; xx<20; xx++)
 	{
-//		if (fabs(mySpaceGlobals->rstick.x) > sensitivity)
-//			xdif = mySpaceGlobals->p1X - (mySpaceGlobals->p1X + (mySpaceGlobals->rstick.x * 18));
-//		if (fabs(mySpaceGlobals->rstick.y) > sensitivity)
-//			ydif = mySpaceGlobals->p1Y - (mySpaceGlobals->p1Y - (mySpaceGlobals->rstick.y * 18));
-		float xdif = mySpaceGlobals->p1X - mySpaceGlobals->touchX + 18;
-		float ydif = mySpaceGlobals->p1Y - mySpaceGlobals->touchY + 18;
-		mySpaceGlobals->angle = my_atan2(xdif, ydif);
-		
-//		activateBullet(mySpaceGlobals, mySpaceGlobals->angle - 3.14159265, mySpaceGlobals->p1X, mySpaceGlobals->p1Y);
-		// shoot a bullet
-		// find an inactive bullet
-		float theta = mySpaceGlobals->angle - 3.14159265;
-		int xx;
-//		for (xx=0; xx<20; xx++)
-//		{
-//			if (mySpaceGlobals->bullets[xx].active != 1)
-//			{
-//				mySpaceGlobals->bullets[xx].x = mySpaceGlobals->p1X + 18;
-//				mySpaceGlobals->bullets[xx].y = mySpaceGlobals->p1Y + 18;
-//				mySpaceGlobals->bullets[xx].m_x = 9*my_sin(theta); // 9 is the desired bullet speed 
-//				mySpaceGlobals->bullets[xx].m_y = 9*my_cos(theta); // we have to solve for the hypotenuese 
-//				mySpaceGlobals->bullets[xx].active = 1;
-//				mySpaceGlobals->firstShotFired = 1;
-//				if (mySpaceGlobals->score >= 1000)
-//					mySpaceGlobals->displayHowToPlay = 0;
-//				break;
-//			}
-//		}
+		if (mySpaceGlobals->bullets[xx].active != 1)
+		{
+			mySpaceGlobals->bullets[xx].x = mySpaceGlobals->p1X + 18;
+			mySpaceGlobals->bullets[xx].y = mySpaceGlobals->p1Y + 18;
+			mySpaceGlobals->bullets[xx].m_x = 9*my_sin(theta); // 9 is the desired bullet speed 
+			mySpaceGlobals->bullets[xx].m_y = 9*my_cos(theta); // we have to solve for the hypotenuese 
+			mySpaceGlobals->bullets[xx].active = 1;
+			mySpaceGlobals->firstShotFired = 1;
+			if (mySpaceGlobals->score >= 1000)
+				mySpaceGlobals->displayHowToPlay = 0;
+			break;
+		}
 	}
+//	}
 	
 	moveBullets(mySpaceGlobals);
 }
@@ -104,13 +101,11 @@ void p1Move(struct SpaceGlobals *mySpaceGlobals) {
 		
 	// Handle analog stick movements
 	float left_x = mySpaceGlobals->lstick_x;
-	float right_x = mySpaceGlobals->rstick_x;
 	float left_y = mySpaceGlobals->lstick_y;
-	float right_y = mySpaceGlobals->rstick_y;
 
 	// get the differences
-	float xdif = left_x + right_x;
-	float ydif = left_y + right_y;
+	float xdif = left_x;
+	float ydif = left_y;
 	
 	// Handle D-pad movements as well
 	// max out speed at 1 or -1 in both directions
@@ -338,19 +333,19 @@ void makeRotationMatrix(float angle, int width, void *orig, void *targ, int tran
 
 void renderEnemies(struct SpaceGlobals *mySpaceGlobals)
 {
-//	// for all active bullets, advance them
-//	int x=0;
-//	for (x=0; x<20; x++)
-//	{
-//		if (mySpaceGlobals->bullets[x].active == 1)
-//		{
-//			
-//			int z, za;
-//			for (z=0; z<4; z++)
-//				for (za=0; za<2; za++)
-//					drawPixel(mySpaceGlobals->graphics, mySpaceGlobals->bullets[x].x + z, mySpaceGlobals->bullets[x].y + za, 255, 0, 0);
-//		}
-//	}
+	// for all active bullets, advance them
+	int x=0;
+	for (x=0; x<20; x++)
+	{
+		if (mySpaceGlobals->bullets[x].active == 1)
+		{
+			
+			int z, za;
+			for (z=0; z<4; z++)
+				for (za=0; za<2; za++)
+					drawPixel(mySpaceGlobals->graphics, mySpaceGlobals->bullets[x].x + z, mySpaceGlobals->bullets[x].y + za, 255, 0, 0);
+		}
+	}
 //	
 //	// for all active enemies, advance them
 //	for (x=0; x<100; x++) // up to 100 enemies at once
@@ -413,7 +408,7 @@ void decompress_sprite(int arraysize, int width, int height, const signed char* 
 			cy += value;
 			continue;
 		}
-////		
+		
 		if (count <= 0) // if it's negative, -count is value, and value is meaningless and advance by one
 		{
 			value = -1*count;
@@ -439,26 +434,26 @@ void decompress_sprite(int arraysize, int width, int height, const signed char* 
 
 void moveBullets(struct SpaceGlobals *mySpaceGlobals)
 {
-//	// for all active bullets, advance them
-//	int x=0;
-//	for (x=0; x<20; x++)
-//	{
-//		if (mySpaceGlobals->bullets[x].active == 1)
-//		{
-//			mySpaceGlobals->bullets[x].x += mySpaceGlobals->bullets[x].m_x;
-//			mySpaceGlobals->bullets[x].y += mySpaceGlobals->bullets[x].m_y;
-//						
-//			if (mySpaceGlobals->bullets[x].x > xMaxBoundry ||
-//				mySpaceGlobals->bullets[x].x < xMinBoundry ||
-//				mySpaceGlobals->bullets[x].y > yMaxBoundry ||
-//				mySpaceGlobals->bullets[x].y < yMinBoundry + 20)
-//				mySpaceGlobals->bullets[x].active = 0;
-//			
-//			mySpaceGlobals->invalid = 1;
-//		}
-//		
-//	}
-//	
+	// for all active bullets, advance them
+	int x=0;
+	for (x=0; x<20; x++)
+	{
+		if (mySpaceGlobals->bullets[x].active == 1)
+		{
+			mySpaceGlobals->bullets[x].x += mySpaceGlobals->bullets[x].m_x;
+			mySpaceGlobals->bullets[x].y += mySpaceGlobals->bullets[x].m_y;
+						
+			if (mySpaceGlobals->bullets[x].x > xMaxBoundry ||
+				mySpaceGlobals->bullets[x].x < xMinBoundry ||
+				mySpaceGlobals->bullets[x].y > yMaxBoundry ||
+				mySpaceGlobals->bullets[x].y < yMinBoundry + 20)
+				mySpaceGlobals->bullets[x].active = 0;
+			
+			mySpaceGlobals->invalid = 1;
+		}
+		
+	}
+	
 //	for (x=0; x<100; x++)
 //	{
 //		if (mySpaceGlobals->enemies[x].position.active == 1)
@@ -510,7 +505,7 @@ void renderTexts(struct SpaceGlobals *mySpaceGlobals)
 	if (mySpaceGlobals->displayHowToPlay)
 	{
 		char nag[255];
-		snprintf(nag, 255, "Touch and hold on the screen to rapid fire!");
+		snprintf(nag, 255, "Use the right joystick to rapid fire!");
 		drawString(mySpaceGlobals->graphics, 10, 7, nag);
 	}
 			
@@ -549,11 +544,11 @@ void reset(struct SpaceGlobals *mySpaceGlobals) {
 void initGameState(struct SpaceGlobals *mySpaceGlobals)
 {
 //	// init bullets
-//	int x;
-//	for (x=0; x<20; x++)
-//	{
-//		mySpaceGlobals->bullets[x].active = 0;
-//	}
+	int x;
+	for (x=0; x<20; x++)
+	{
+		mySpaceGlobals->bullets[x].active = 0;
+	}
 //	
 	// init x and y pos of player
 	mySpaceGlobals->p1X =  40;
