@@ -57,20 +57,20 @@ void p1Shoot(struct SpaceGlobals * mySpaceGlobals)
 	float xdif = 0;
 	float ydif = 0;
 	
-//	if ((my_fabs(mySpaceGlobals->rstick_x) > sensitivity) || (my_fabs(mySpaceGlobals->rstick_y) > sensitivity))
+//	if ((fabs(mySpaceGlobals->rstick_x) > sensitivity) || (fabs(mySpaceGlobals->rstick_y) > sensitivity))
 //	{
-//	if (my_fabs(mySpaceGlobals->rstick_x) > sensitivity)
+//	if (fabs(mySpaceGlobals->rstick_x) > sensitivity)
 		xdif = mySpaceGlobals->p1X - (mySpaceGlobals->p1X + (mySpaceGlobals->rstick_x * 18));
-//	if (my_fabs(mySpaceGlobals->rstick_y) > sensitivity)
+//	if (fabs(mySpaceGlobals->rstick_y) > sensitivity)
 		ydif = mySpaceGlobals->p1Y - (mySpaceGlobals->p1Y - (mySpaceGlobals->rstick_y * 18));
 	
 	if (xdif == 0 || ydif == 0) return;
 	
-	mySpaceGlobals->angle = my_atan2(xdif, ydif);
+	mySpaceGlobals->angle = atan2(xdif, ydif);
 
 	// shoot a bullet
 	// find an inactive bullet
-	float theta = mySpaceGlobals->angle - 3.14159265;
+	float theta = mySpaceGlobals->angle - M_PI;
 	int xx;
 	for (xx=0; xx<20; xx++)
 	{
@@ -78,8 +78,8 @@ void p1Shoot(struct SpaceGlobals * mySpaceGlobals)
 		{
 			mySpaceGlobals->bullets[xx].x = mySpaceGlobals->p1X + 18;
 			mySpaceGlobals->bullets[xx].y = mySpaceGlobals->p1Y + 18;
-			mySpaceGlobals->bullets[xx].m_x = 9*my_sin(theta); // 9 is the desired bullet speed 
-			mySpaceGlobals->bullets[xx].m_y = 9*my_cos(theta); // we have to solve for the hypotenuese 
+			mySpaceGlobals->bullets[xx].m_x = 9*sin(theta); // 9 is the desired bullet speed 
+			mySpaceGlobals->bullets[xx].m_y = 9*cos(theta); // we have to solve for the hypotenuese 
 			mySpaceGlobals->bullets[xx].active = 1;
 			mySpaceGlobals->firstShotFired = 1;
 			if (mySpaceGlobals->score >= 1000)
@@ -126,7 +126,7 @@ void p1Move(struct SpaceGlobals *mySpaceGlobals) {
 	mySpaceGlobals->p1Y -= ydif*5;
 		
 	// calculate angle to face
-	mySpaceGlobals->angle = my_atan2(ydif, xdif) - 3.14159265/2;
+	mySpaceGlobals->angle = atan2(ydif, xdif) - M_PI_2;
 	
 	// update score if on a frame divisible by 60 (gain 10 points every second)
 	if (mySpaceGlobals->frame % 60 == 0)
@@ -314,8 +314,8 @@ void makeRotationMatrix(float angle, int width, void *orig, void *targ, int tran
 		{
 				
 			// rotate the pixel by the angle into a new spot in the rotation matrix
-			int oldx = (int)((ix-woffset)*my_cos(angle) + (iy-woffset)*my_sin(angle) + woffset);
-			int oldy = (int)((ix-woffset)*my_sin(angle) - (iy-woffset)*my_cos(angle) + woffset);
+			int oldx = (int)((ix-woffset)*cos(angle) + (iy-woffset)*sin(angle) + woffset);
+			int oldy = (int)((ix-woffset)*sin(angle) - (iy-woffset)*cos(angle) + woffset);
 			
 //			if (oldx < 0) oldx += width;
 //			if (oldy < 0) oldy += width;
@@ -352,7 +352,7 @@ void renderEnemies(struct SpaceGlobals *mySpaceGlobals)
 //	{
 //		if (mySpaceGlobals->enemies[x].position.active >= 1)
 //		{
-////			drawBitmap(mySpaceGlobals->graphics, mySpaceGlobals->enemies[x].position.x, mySpaceGlobals->enemies[x].position.y, 23, 23, mySpaceGlobals->enemies[x].rotated_sprite, enemy_palette);
+////			drawBitmap(mySpaceGlobals->graphics, mySpaceGlobals->enemies[x].position.x, mySpaceGlobals->enemies[x].position.y, 23, 23, mySpaceGlobals->enemies[x].rotated_sprite, enepalette);
 //		}
 //	}
 }
@@ -371,7 +371,7 @@ void render(struct SpaceGlobals *mySpaceGlobals)
 		}
 
 		renderStars(mySpaceGlobals);
-		renderEnemies(mySpaceGlobals);
+//		renderEnemies(mySpaceGlobals);
 		renderShip(mySpaceGlobals);
 		renderTexts(mySpaceGlobals);
 
@@ -506,7 +506,7 @@ void renderTexts(struct SpaceGlobals *mySpaceGlobals)
 	{
 		char nag[255];
 		snprintf(nag, 255, "Use the right joystick to rapid fire!");
-		drawString(mySpaceGlobals->graphics, 5, 7, nag);
+		drawString(mySpaceGlobals->graphics, 17, 17, nag);
 	}
 			
 }
@@ -599,8 +599,8 @@ void displayTitle(struct SpaceGlobals * mySpaceGlobals)
 		char credits[255];
 		snprintf(credits, 255, "by vgmoose");
 
-		char musiccredits[255];
-		snprintf(musiccredits, 255, "~*cruise*~ by (T-T)b");
+//		char musiccredits[255];
+//		snprintf(musiccredits, 255, "~*cruise*~ by (T-T)b");
 		
 		char license[255];
 		snprintf(license, 255, "MIT License");
@@ -908,7 +908,7 @@ void addNewEnemies(struct SpaceGlobals *mySpaceGlobals)
 	
 	int startx, starty;
 	
-	float theta = prand(&mySpaceGlobals->seed)*3.14159265;
+	float theta = prand(&mySpaceGlobals->seed)*M_PI;
 	randVal = prand(&mySpaceGlobals->seed);
 	
 	// horiz size
@@ -918,7 +918,7 @@ void addNewEnemies(struct SpaceGlobals *mySpaceGlobals)
 		starty = randVal*yMaxBoundry;
 		
 		if (startx != 0)
-			theta -= 3.14159265;
+			theta -= M_PI;
 	}
 	else
 	{
@@ -926,9 +926,9 @@ void addNewEnemies(struct SpaceGlobals *mySpaceGlobals)
 		startx = randVal*xMaxBoundry;
 		
 		if (starty == 20)
-			theta -= 3.14159265/2;
+			theta -= M_PI_2;
 		else
-			theta += 3.14159265/2;
+			theta += M_PI_2;
 	}
 	
 	// seek directly to the player
@@ -937,7 +937,7 @@ void addNewEnemies(struct SpaceGlobals *mySpaceGlobals)
 		float xdif = startx + 11 - (mySpaceGlobals->p1X + 18);
 		float ydif = starty + 11 - (mySpaceGlobals->p1Y + 18);
 		
-		theta = my_atan2(xdif, ydif) - 3.14159265;
+		theta = atan2(xdif, ydif) - M_PI;
 	}
 		
 //	int xx;
@@ -947,8 +947,8 @@ void addNewEnemies(struct SpaceGlobals *mySpaceGlobals)
 //		{
 //			mySpaceGlobals->enemies[xx].position.x = startx;
 //			mySpaceGlobals->enemies[xx].position.y = starty;
-//			mySpaceGlobals->enemies[xx].position.m_x = speed*my_sin(theta); // speed is the desired enemy speed 
-//			mySpaceGlobals->enemies[xx].position.m_y = speed*my_cos(theta); // we have to solve for the hypotenuese 
+//			mySpaceGlobals->enemies[xx].position.m_x = speed*sin(theta); // speed is the desired enemy speed 
+//			mySpaceGlobals->enemies[xx].position.m_y = speed*cos(theta); // we have to solve for the hypotenuese 
 //			mySpaceGlobals->enemies[xx].position.active = 1;
 //			break;
 //		}

@@ -1,8 +1,8 @@
 build:
-	clang *.c -lSDL2 -o spacenx
+	clang *.c -lSDL2 -lm -o spacenx
 
 debug:
-	clang -g *.c -lSDL2 -o spacenx
+	clang -g *.c -lSDL2 -lm -o spacenx
 
 switch:
 	make LLVM_POSTFIX=-5.0 LD=ld.lld-5.0 -f Makefile.switch
