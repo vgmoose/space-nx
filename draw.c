@@ -42,7 +42,7 @@ void drawString(struct Graphics* g, int xi, int yi, char * string)
 {
 	// for every character in the string, if it's within range, render it at the current position
 	// and move over 8 characters
-	
+		
 	xi *= 6.25;
 	yi *= 13;
 	

@@ -30,6 +30,11 @@ void PADRead(struct PADData* data)
 	#if defined(LINUX) || defined(__APPLE__)
 		SDL_Event event;
 		SDL_PollEvent(&event);
+	
+		data->lstick_x = 0;
+		data->lstick_y = 0;
+		data->rstick_x = 0;
+		data->rstick_x = 0;
 		
 		if (event.type == SDL_KEYDOWN)
 		{
@@ -42,7 +47,11 @@ void PADRead(struct PADData* data)
 			data->btns_h |= ((event.key.keysym.sym == SDLK_SPACE)?		BUTTON_PLUS : 0);
 			data->btns_h |= ((event.key.keysym.sym == SDLK_DELETE)?		BUTTON_MINUS : 0);
 			
+			// update stick values (between -1 and 1 for each)
+			data->rstick_x = -1*(event.key.keysym.sym == SDLK_w) + (event.key.keysym.sym == SDLK_s);
+			data->rstick_y = -1*(event.key.keysym.sym == SDLK_a) + (event.key.keysym.sym == SDLK_d);
 		}
+	
 	#else // switch
 
 		// scan for controller
@@ -72,7 +81,5 @@ void PADRead(struct PADData* data)
 		data->rstick_x = d3 / 32768.0;
 		data->rstick_y = d4 / 32768.0;
 	
-		printf("%f %f\n",  data->lstick_x, data->lstick_y);
-
 	#endif
 }

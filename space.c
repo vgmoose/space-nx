@@ -129,14 +129,14 @@ void p1Move(struct SpaceGlobals *mySpaceGlobals) {
 	mySpaceGlobals->angle = my_atan2(ydif, xdif) - 3.14159265/2;
 	
 	// update score if on a frame divisible by 60 (gain 10 points every second)
-//	if (mySpaceGlobals->frame % 60 == 0)
-//	{
-//		increaseScore(mySpaceGlobals, 10);
-//		
-//		// if the score is at least 50 and a shot hasn't been fired yet, display a message about shooting
-//		if (mySpaceGlobals->score >= 0 && !mySpaceGlobals->firstShotFired)
-//			mySpaceGlobals->displayHowToPlay = 1;
-//	}
+	if (mySpaceGlobals->frame % 60 == 0)
+	{
+		increaseScore(mySpaceGlobals, 10);
+		
+		// if the score is at least 50 and a shot hasn't been fired yet, display a message about shooting
+		if (mySpaceGlobals->score >= 0 && !mySpaceGlobals->firstShotFired)
+			mySpaceGlobals->displayHowToPlay = 1;
+	}
 
 };
 
@@ -492,21 +492,21 @@ void renderTexts(struct SpaceGlobals *mySpaceGlobals)
 		snprintf(score, 255, "Score: N/A");
 	else
 		snprintf(score, 255, "Score: %09d", mySpaceGlobals->score);
-	drawString(mySpaceGlobals->graphics, 0, -1, score);
+	drawString(mySpaceGlobals->graphics, 0, 0, score);
 	
 	char level[255];
 	snprintf(level, 255, "Lv %d", mySpaceGlobals->level+1);
-	drawString(mySpaceGlobals->graphics, 30, -1, level);
+	drawString(mySpaceGlobals->graphics, 30, 0, level);
 
 	char lives[255];
 	snprintf(lives, 255, "Lives: %d", mySpaceGlobals->lives);
-	drawString(mySpaceGlobals->graphics, 55, -1, lives);
+	drawString(mySpaceGlobals->graphics, 55, 0, lives);
 	
 	if (mySpaceGlobals->displayHowToPlay)
 	{
 		char nag[255];
 		snprintf(nag, 255, "Use the right joystick to rapid fire!");
-		drawString(mySpaceGlobals->graphics, 10, 7, nag);
+		drawString(mySpaceGlobals->graphics, 5, 7, nag);
 	}
 			
 }
@@ -860,17 +860,21 @@ void displayPasswordScreen(struct SpaceGlobals * mySpaceGlobals)
 		char password[255];
 		snprintf(password, 255, "Password:");
 		char up_cur[255];
-		snprintf(up_cur, 255, "v");
+		snprintf(up_cur, 255, "     ");
 		char cur_pw[255];
 		snprintf(cur_pw, 255, "%05d", mySpaceGlobals->passwordEntered);
 		char down_cur[255];
-		snprintf(down_cur, 255, "^");
+		snprintf(down_cur, 255, "     ");
 		
-		drawString(mySpaceGlobals->graphics, 22, 8, password);
+		// draw arrow cursor into cursor strings
+		up_cur[mySpaceGlobals->menuChoice] = 'v';
+		down_cur[mySpaceGlobals->menuChoice] = '^';
 		
-		drawString(mySpaceGlobals->graphics, 32 + mySpaceGlobals->menuChoice, 7, up_cur);
+		drawString(mySpaceGlobals->graphics, 19, 8, password);
+		
+		drawString(mySpaceGlobals->graphics, 32, 7, up_cur);
 		drawString(mySpaceGlobals->graphics, 32, 8, cur_pw);
-		drawString(mySpaceGlobals->graphics, 32 + mySpaceGlobals->menuChoice, 9, down_cur);
+		drawString(mySpaceGlobals->graphics, 32, 9, down_cur);
 		
 		flipBuffers(mySpaceGlobals->graphics);
 		mySpaceGlobals->invalid = 0;
@@ -1046,8 +1050,8 @@ void tryPassword(struct SpaceGlobals *mySpaceGlobals)
 	if (mySpaceGlobals->passwordEntered == 00000 && mySpaceGlobals->playerChoice != 0)
 	{
 		mySpaceGlobals->playerChoice = 0;
-//		decompress_sprite(511, 36, 36, compressed_ship, mySpaceGlobals->orig_ship, 14);
-//		mySpaceGlobals->curPalette = ship_palette;
+		decompress_sprite(511, 36, 36, compressed_ship, orig_ship, 14);
+		mySpaceGlobals->curPalette = ship_palette;
 		mySpaceGlobals->transIndex = 14;
 		mySpaceGlobals->state = 7;
 	}
@@ -1056,8 +1060,8 @@ void tryPassword(struct SpaceGlobals *mySpaceGlobals)
 	if (mySpaceGlobals->passwordEntered == 12345)
 	{
 		mySpaceGlobals->playerChoice = 3;
-//		decompress_sprite(452, 36, 36, compressed_ship2, mySpaceGlobals->orig_ship, 5);
-//		mySpaceGlobals->curPalette = ship2_palette;
+		decompress_sprite(452, 36, 36, compressed_ship2, orig_ship, 5);
+		mySpaceGlobals->curPalette = ship2_palette;
 		mySpaceGlobals->transIndex = 5;
 		mySpaceGlobals->state = 7;
 	}
@@ -1066,8 +1070,8 @@ void tryPassword(struct SpaceGlobals *mySpaceGlobals)
 	if (mySpaceGlobals->passwordEntered == 24177)
 	{
 		mySpaceGlobals->playerChoice = 1;
-//		decompress_sprite(662, 36, 36, compressed_boss2, mySpaceGlobals->orig_ship, 39);
-//		mySpaceGlobals->curPalette = boss2_palette;
+		decompress_sprite(662, 36, 36, compressed_boss2, orig_ship, 39);
+		mySpaceGlobals->curPalette = boss2_palette;
 		mySpaceGlobals->transIndex = 39;
 		mySpaceGlobals->state = 7;
 	}
@@ -1076,8 +1080,8 @@ void tryPassword(struct SpaceGlobals *mySpaceGlobals)
 	if (mySpaceGlobals->passwordEntered == 37124)
 	{
 		mySpaceGlobals->playerChoice = 2;
-//		decompress_sprite(740, 36, 36, compressed_boss, mySpaceGlobals->orig_ship, 39);
-//		mySpaceGlobals->curPalette = boss_palette;
+		decompress_sprite(740, 36, 36, compressed_boss, orig_ship, 39);
+		mySpaceGlobals->curPalette = boss_palette;
 		mySpaceGlobals->transIndex = 39;
 		mySpaceGlobals->state = 7;
 	}
@@ -1094,7 +1098,10 @@ void tryPassword(struct SpaceGlobals *mySpaceGlobals)
 	if (mySpaceGlobals->passwordEntered == 41666)
 	{
 		blackout(mySpaceGlobals->graphics);
-//		OSFatal("Installing IOSU Exploit... This may take a while.");
+		drawString(mySpaceGlobals->graphics, 3, 7, "Installing IOSU Exploit...");
+		drawString(mySpaceGlobals->graphics, 3, 8, "This may take a while.");
+		flipBuffers(mySpaceGlobals->graphics);
+		mySpaceGlobals->state = -27;
 	}
 	
 	// 100 passwords, one for each level

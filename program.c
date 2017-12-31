@@ -102,7 +102,6 @@ int main(int argc, char *argv[])
 		SDL_Delay(16);
 		
 		PADRead(&pad_data);
-		printf("%f %f\n",  pad_data.lstick_x, pad_data.lstick_y);
 		
 		//Get the status of the controller
 		mySpaceGlobals.button = pad_data.btns_h;
@@ -144,6 +143,10 @@ int main(int argc, char *argv[])
 		{
 			displayGameOver(&mySpaceGlobals);
 			doMenuAction(&mySpaceGlobals);
+		}
+		else if (mySpaceGlobals.state == -27) // for password inputs
+		{
+			// do nothing
 		}
 		else 	// game play
 		{
