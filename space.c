@@ -103,10 +103,10 @@ void p1Move(struct SpaceGlobals *mySpaceGlobals) {
 		return;
 		
 	// Handle analog stick movements
-	int left_x = mySpaceGlobals->lstick_x;
-	int right_x = mySpaceGlobals->rstick_x;
-	int left_y = mySpaceGlobals->lstick_y;
-	int right_y = mySpaceGlobals->rstick_y;
+	float left_x = mySpaceGlobals->lstick_x;
+	float right_x = mySpaceGlobals->rstick_x;
+	float left_y = mySpaceGlobals->lstick_y;
+	float right_y = mySpaceGlobals->rstick_y;
 
 	// get the differences
 	float xdif = left_x + right_x;
@@ -134,14 +134,14 @@ void p1Move(struct SpaceGlobals *mySpaceGlobals) {
 	mySpaceGlobals->angle = my_atan2(ydif, xdif) - 3.14159265/2;
 	
 	// update score if on a frame divisible by 60 (gain 10 points every second)
-	if (mySpaceGlobals->frame % 60 == 0)
-	{
-		increaseScore(mySpaceGlobals, 10);
-		
-		// if the score is at least 50 and a shot hasn't been fired yet, display a message about shooting
-		if (mySpaceGlobals->score >= 50 && !mySpaceGlobals->firstShotFired)
-			mySpaceGlobals->displayHowToPlay = 1;
-	}
+//	if (mySpaceGlobals->frame % 60 == 0)
+//	{
+//		increaseScore(mySpaceGlobals, 10);
+//		
+//		// if the score is at least 50 and a shot hasn't been fired yet, display a message about shooting
+//		if (mySpaceGlobals->score >= 0 && !mySpaceGlobals->firstShotFired)
+//			mySpaceGlobals->displayHowToPlay = 1;
+//	}
 
 };
 
@@ -511,7 +511,7 @@ void renderTexts(struct SpaceGlobals *mySpaceGlobals)
 	{
 		char nag[255];
 		snprintf(nag, 255, "Touch and hold on the screen to rapid fire!");
-		drawString(mySpaceGlobals->graphics, 20, 17, nag);
+		drawString(mySpaceGlobals->graphics, 10, 7, nag);
 	}
 			
 }

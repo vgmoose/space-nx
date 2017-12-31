@@ -17,7 +17,7 @@ struct Graphics {
 //	float m_y;
 //	int active;
 //};
-//
+
 //struct Enemy {
 //	float angle;
 //	struct Bullet position;
@@ -64,18 +64,15 @@ struct SpaceGlobals{
 
 	//Game engine globals
 	int button;
-	int lstick_x;
-	int lstick_y;
-	int rstick_x;
-	int rstick_y;	
+	float lstick_x, lstick_y, rstick_x, rstick_y;	
 	
 	// only 20 bullets can be onscreen at a time
 //	struct Bullet bullets[20];
 //	
 //	// the locations of the 200 random stars
 	struct Pixel stars[200];
-//	
-//	// the location of enemies
+	
+	// the location of enemies
 //	struct Enemy enemies[100];
 
 	int renderResetFlag;

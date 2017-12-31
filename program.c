@@ -102,12 +102,15 @@ int main(int argc, char *argv[])
 		SDL_Delay(16);
 		
 		PADRead(&pad_data);
+		printf("%f %f\n",  pad_data.lstick_x, pad_data.lstick_y);
 		
 		//Get the status of the controller
 		mySpaceGlobals.button = pad_data.btns_h;
 		
-//		mySpaceGlobals.rstick_x = pad_data.rstick;
-//		mySpaceGlobals.lstick_x = pad_data.lstick;
+		mySpaceGlobals.rstick_x = pad_data.rstick_x;
+		mySpaceGlobals.lstick_x = pad_data.lstick_x;
+		mySpaceGlobals.rstick_y = pad_data.rstick_y;
+		mySpaceGlobals.lstick_y = pad_data.lstick_y;
 		
 //		mySpaceGlobals.touched = vpad_data.tpdata.touched;
 		if (mySpaceGlobals.touched == 1)

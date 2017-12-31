@@ -59,6 +59,20 @@ void PADRead(struct PADData* data)
 		data->btns_h |= ((ent.button_state & JOYPAD_RIGHT)?		BUTTON_RIGHT : 0);
 		data->btns_h |= ((ent.button_state & JOYPAD_START)?		BUTTON_PLUS : 0);
 		data->btns_h |= ((ent.button_state & JOYPAD_SELECT)?	BUTTON_MINUS : 0);
+	
+		// get int values of sticks
+		int p1 = ent.left_stick_x, p2 = ent.left_stick_y, p3 = ent.right_stick_x, p4 = ent.right_stick_y;
+
+		// make doubles
+		double d1 = (float) p1, d2 = (float) p2, d3 = (float) p3, d4 = (float) p4;
+
+		// update stick values (between -1 and 1 for each)
+		data->lstick_x = d1 / 32768.0;
+		data->lstick_y = d2 / 32768.0;
+		data->rstick_x = d3 / 32768.0;
+		data->rstick_y = d4 / 32768.0;
+	
+		printf("%f %f\n",  data->lstick_x, data->lstick_y);
 
 	#endif
 }

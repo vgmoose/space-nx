@@ -29,10 +29,10 @@
 // custom data structure for space game input
 struct PADData {
 	int btns_h;
-	int rstick_x;
-	int lstick_x;
-	int rstick_y;
-	int lstick_y;
+	float rstick_x;
+	float lstick_x;
+	float rstick_y;
+	float lstick_y;
 };
 
 void PADInit();
