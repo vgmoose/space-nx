@@ -18,11 +18,11 @@ struct Bullet {
 	int active;
 };
 
-//struct Enemy {
-//	float angle;
-//	struct Bullet position;
-//	unsigned char rotated_sprite[23][23];
-//};
+struct Enemy {
+	float angle;
+	struct Bullet position;
+	unsigned char rotated_sprite[23][23];
+};
 
 struct Pixel {
 	int x;
@@ -47,7 +47,7 @@ struct SpaceGlobals{
 	unsigned int seed;
 	
 	const unsigned char (*curPalette)[3];
-//	unsigned char enemy[23][23];
+	unsigned char enemy[23][23];
 	
 	int passwordList[100];
 	int playerExplodeFrame;
@@ -69,11 +69,11 @@ struct SpaceGlobals{
 	// only 20 bullets can be onscreen at a time
 	struct Bullet bullets[20];
 	
-//	// the locations of the 200 random stars
+	// the locations of the 200 random stars
 	struct Pixel stars[200];
 	
 	// the location of enemies
-//	struct Enemy enemies[100];
+	struct Enemy enemies[10];
 
 	int renderResetFlag;
 	int invalid;

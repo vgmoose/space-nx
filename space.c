@@ -57,37 +57,33 @@ void p1Shoot(struct SpaceGlobals * mySpaceGlobals)
 	float xdif = 0;
 	float ydif = 0;
 	
-//	if ((fabs(mySpaceGlobals->rstick_x) > sensitivity) || (fabs(mySpaceGlobals->rstick_y) > sensitivity))
-//	{
-//	if (fabs(mySpaceGlobals->rstick_x) > sensitivity)
-		xdif = mySpaceGlobals->p1X - (mySpaceGlobals->p1X + (mySpaceGlobals->rstick_x * 18));
-//	if (fabs(mySpaceGlobals->rstick_y) > sensitivity)
-		ydif = mySpaceGlobals->p1Y - (mySpaceGlobals->p1Y - (mySpaceGlobals->rstick_y * 18));
+	xdif = mySpaceGlobals->p1X - (mySpaceGlobals->p1X + (mySpaceGlobals->rstick_x * 18));
+	ydif = mySpaceGlobals->p1Y - (mySpaceGlobals->p1Y - (mySpaceGlobals->rstick_y * 18));
 	
-	if (xdif == 0 || ydif == 0) return;
-	
-	mySpaceGlobals->angle = atan2(xdif, ydif);
-
-	// shoot a bullet
-	// find an inactive bullet
-	float theta = mySpaceGlobals->angle - M_PI;
-	int xx;
-	for (xx=0; xx<20; xx++)
+	if (xdif != 0 && ydif != 0)
 	{
-		if (mySpaceGlobals->bullets[xx].active != 1)
+		mySpaceGlobals->angle = atan2(xdif, ydif);
+
+		// shoot a bullet
+		// find an inactive bullet
+		float theta = mySpaceGlobals->angle - M_PI;
+		int xx;
+		for (xx=0; xx<20; xx++)
 		{
-			mySpaceGlobals->bullets[xx].x = mySpaceGlobals->p1X + 18;
-			mySpaceGlobals->bullets[xx].y = mySpaceGlobals->p1Y + 18;
-			mySpaceGlobals->bullets[xx].m_x = 9*sin(theta); // 9 is the desired bullet speed 
-			mySpaceGlobals->bullets[xx].m_y = 9*cos(theta); // we have to solve for the hypotenuese 
-			mySpaceGlobals->bullets[xx].active = 1;
-			mySpaceGlobals->firstShotFired = 1;
-			if (mySpaceGlobals->score >= 1000)
-				mySpaceGlobals->displayHowToPlay = 0;
-			break;
+			if (mySpaceGlobals->bullets[xx].active != 1)
+			{
+				mySpaceGlobals->bullets[xx].x = mySpaceGlobals->p1X + 18;
+				mySpaceGlobals->bullets[xx].y = mySpaceGlobals->p1Y + 18;
+				mySpaceGlobals->bullets[xx].m_x = 9*sin(theta); // 9 is the desired bullet speed 
+				mySpaceGlobals->bullets[xx].m_y = 9*cos(theta); // we have to solve for the hypotenuese 
+				mySpaceGlobals->bullets[xx].active = 1;
+				mySpaceGlobals->firstShotFired = 1;
+				if (mySpaceGlobals->score >= 1000)
+					mySpaceGlobals->displayHowToPlay = 0;
+				break;
+			}
 		}
 	}
-//	}
 	
 	moveBullets(mySpaceGlobals);
 }
@@ -134,7 +130,7 @@ void p1Move(struct SpaceGlobals *mySpaceGlobals) {
 		increaseScore(mySpaceGlobals, 10);
 		
 		// if the score is at least 50 and a shot hasn't been fired yet, display a message about shooting
-		if (mySpaceGlobals->score >= 0 && !mySpaceGlobals->firstShotFired)
+		if (mySpaceGlobals->score >= 50 && !mySpaceGlobals->firstShotFired)
 			mySpaceGlobals->displayHowToPlay = 1;
 	}
 
@@ -152,67 +148,67 @@ void checkPause(struct SpaceGlobals * mySpaceGlobals)
 
 void handleCollisions(struct SpaceGlobals * mySpaceGlobals)
 {
-//	int playerLeft = mySpaceGlobals->p1X;
-//	int playerRight = playerLeft + 36;
-//	int playerUp = mySpaceGlobals->p1Y;
-//	int playerDown = playerUp + 36;
-//	
-//	// don't let the player go offscreen
-//	if (playerLeft < xMinBoundry)
-//		mySpaceGlobals->p1X = xMinBoundry;
-//	if (playerRight > xMaxBoundry)
-//		mySpaceGlobals->p1X = xMaxBoundry - 36;
-//	if (playerUp < yMinBoundry + 20)
-//		mySpaceGlobals->p1Y = yMinBoundry + 20;
-//	if (playerDown > yMaxBoundry)
-//		mySpaceGlobals->p1Y = yMaxBoundry - 36;
-//	
-//		// check enemies if they collide with the player or any of the 20 active bullets
-//		int x;
-//		for (x=0; x<100; x++)
-//		{
-//			if (mySpaceGlobals->enemies[x].position.active == 1)
-//			{
-//				// collision checkin from here: http://stackoverflow.com/a/1736741/1137828
-//				// check player
-//								
-//				int sqMe1 = ((mySpaceGlobals->enemies[x].position.x+7)-(mySpaceGlobals->p1X+9));
-//				int sqMe2 = ((mySpaceGlobals->enemies[x].position.y+7)-(mySpaceGlobals->p1Y+9));
-//				
-//				if (sqMe1*sqMe1 + sqMe2*sqMe2 <= (7+9)*(7+9))
-//				{
-//					if (mySpaceGlobals->playerExplodeFrame < 1)
-//					{
-//						// player was hit
-//						mySpaceGlobals->playerExplodeFrame = 2;
-//						initGameState(mySpaceGlobals);						
-//					}
-//				}
-//				
-//				int y;
-//				for (y=0; y<20; y++)
-//				{
-//					if (mySpaceGlobals->bullets[y].active == 1)
-//					{
-//						// check player's bullets
-//						sqMe1 = ((mySpaceGlobals->enemies[x].position.x+7)-(mySpaceGlobals->bullets[y].x+1));
-//						sqMe2 = ((mySpaceGlobals->enemies[x].position.y+7)-(mySpaceGlobals->bullets[y].y+1));
-//						
-//						if (sqMe1*sqMe1 + sqMe2*sqMe2 <= (7+1)*(7+1))
-//						{
-//							// enemy was hit, active = 2 is explode
-//							increaseScore(mySpaceGlobals, 100); // 100 points for killing enemy
-//							mySpaceGlobals->enemies[x].position.active = 2;
-//							
-//							// bullet is destroyed with enemy
-//							mySpaceGlobals->bullets[y].active = 0;
-//							
-//							break;
-//						}
-//					}
-//				}
-//			}
-//		}
+	int playerLeft = mySpaceGlobals->p1X;
+	int playerRight = playerLeft + 36;
+	int playerUp = mySpaceGlobals->p1Y;
+	int playerDown = playerUp + 36;
+	
+	// don't let the player go offscreen
+	if (playerLeft < xMinBoundry)
+		mySpaceGlobals->p1X = xMinBoundry;
+	if (playerRight > xMaxBoundry)
+		mySpaceGlobals->p1X = xMaxBoundry - 36;
+	if (playerUp < yMinBoundry + 20)
+		mySpaceGlobals->p1Y = yMinBoundry + 20;
+	if (playerDown > yMaxBoundry)
+		mySpaceGlobals->p1Y = yMaxBoundry - 36;
+	
+		// check enemies if they collide with the player or any of the 20 active bullets
+		int x;
+		for (x=0; x<10; x++)
+		{
+			if (mySpaceGlobals->enemies[x].position.active == 1)
+			{
+				// collision checkin from here: http://stackoverflow.com/a/1736741/1137828
+				// check player
+								
+				int sqMe1 = ((mySpaceGlobals->enemies[x].position.x+7)-(mySpaceGlobals->p1X+9));
+				int sqMe2 = ((mySpaceGlobals->enemies[x].position.y+7)-(mySpaceGlobals->p1Y+9));
+				
+				if (sqMe1*sqMe1 + sqMe2*sqMe2 <= (7+9)*(7+9))
+				{
+					if (mySpaceGlobals->playerExplodeFrame < 1)
+					{
+						// player was hit
+						mySpaceGlobals->playerExplodeFrame = 2;
+						initGameState(mySpaceGlobals);						
+					}
+				}
+				
+				int y;
+				for (y=0; y<20; y++)
+				{
+					if (mySpaceGlobals->bullets[y].active == 1)
+					{
+						// check player's bullets
+						sqMe1 = ((mySpaceGlobals->enemies[x].position.x+7)-(mySpaceGlobals->bullets[y].x+1));
+						sqMe2 = ((mySpaceGlobals->enemies[x].position.y+7)-(mySpaceGlobals->bullets[y].y+1));
+						
+						if (sqMe1*sqMe1 + sqMe2*sqMe2 <= (7+1)*(7+1))
+						{
+							// enemy was hit, active = 2 is explode
+							increaseScore(mySpaceGlobals, 100); // 100 points for killing enemy
+							mySpaceGlobals->enemies[x].position.active = 2;
+							
+							// bullet is destroyed with enemy
+							mySpaceGlobals->bullets[y].active = 0;
+							
+							break;
+						}
+					}
+				}
+			}
+		}
 
 }
 
@@ -253,39 +249,39 @@ void makeScaleMatrix(int frame, int width, void *orig, void *targ, int transInde
 
 void handleExplosions(struct SpaceGlobals* mySpaceGlobals)
 {
-//	int x;
-//	for (x=0; x<100; x++)
-//	{
-//		if (mySpaceGlobals->enemies[x].position.active > 1)
-//		{
-//			makeScaleMatrix(mySpaceGlobals->enemies[x].position.active/2.0, 23, mySpaceGlobals->enemy, mySpaceGlobals->enemies[x].rotated_sprite, 9);
-//			mySpaceGlobals->enemies[x].position.active ++;
-//			
-//			if (mySpaceGlobals->enemies[x].position.active > 20)
-//				mySpaceGlobals->enemies[x].position.active = 0;
-//		}
-//	}
-//		
-//	if (mySpaceGlobals->playerExplodeFrame > 1)
-//	{
-//		makeScaleMatrix(mySpaceGlobals->playerExplodeFrame, 36, mySpaceGlobals->orig_ship, mySpaceGlobals->rotated_ship, mySpaceGlobals->transIndex);
-//		mySpaceGlobals->playerExplodeFrame ++;
-//		mySpaceGlobals->invalid = 1;
-//		
-//		if (mySpaceGlobals->playerExplodeFrame > 20)
-//		{
-//			mySpaceGlobals->playerExplodeFrame = 0;
-//			mySpaceGlobals->lives --;
-//			if (mySpaceGlobals->lives <= 0)
-//			{
-//				// game over!
-//				mySpaceGlobals->state = 4;
-//				mySpaceGlobals->invalid = 1;
-//			}
-//			else
-//				mySpaceGlobals->renderResetFlag = 1;
-//		}
-//	}
+	int x;
+	for (x=0; x<10; x++)
+	{
+		if (mySpaceGlobals->enemies[x].position.active > 1)
+		{
+			makeScaleMatrix(mySpaceGlobals->enemies[x].position.active/2.0, 23, mySpaceGlobals->enemy, mySpaceGlobals->enemies[x].rotated_sprite, 9);
+			mySpaceGlobals->enemies[x].position.active ++;
+			
+			if (mySpaceGlobals->enemies[x].position.active > 20)
+				mySpaceGlobals->enemies[x].position.active = 0;
+		}
+	}
+		
+	if (mySpaceGlobals->playerExplodeFrame > 1)
+	{
+		makeScaleMatrix(mySpaceGlobals->playerExplodeFrame, 36, orig_ship, rotated_ship, mySpaceGlobals->transIndex);
+		mySpaceGlobals->playerExplodeFrame ++;
+		mySpaceGlobals->invalid = 1;
+		
+		if (mySpaceGlobals->playerExplodeFrame > 20)
+		{
+			mySpaceGlobals->playerExplodeFrame = 0;
+			mySpaceGlobals->lives --;
+			if (mySpaceGlobals->lives <= 0)
+			{
+				// game over!
+				mySpaceGlobals->state = 4;
+				mySpaceGlobals->invalid = 1;
+			}
+			else
+				mySpaceGlobals->renderResetFlag = 1;
+		}
+	}
 }
 
 void makeRotationMatrix(float angle, int width, void *orig, void *targ, int transIndex)
@@ -346,15 +342,15 @@ void renderEnemies(struct SpaceGlobals *mySpaceGlobals)
 					drawPixel(mySpaceGlobals->graphics, mySpaceGlobals->bullets[x].x + z, mySpaceGlobals->bullets[x].y + za, 255, 0, 0);
 		}
 	}
-//	
-//	// for all active enemies, advance them
-//	for (x=0; x<100; x++) // up to 100 enemies at once
-//	{
-//		if (mySpaceGlobals->enemies[x].position.active >= 1)
-//		{
-////			drawBitmap(mySpaceGlobals->graphics, mySpaceGlobals->enemies[x].position.x, mySpaceGlobals->enemies[x].position.y, 23, 23, mySpaceGlobals->enemies[x].rotated_sprite, enepalette);
-//		}
-//	}
+	
+	// for all active enemies, advance them
+	for (x=0; x<10; x++) // up to 100 enemies at once
+	{
+		if (mySpaceGlobals->enemies[x].position.active >= 1)
+		{
+			drawBitmap(mySpaceGlobals->graphics, mySpaceGlobals->enemies[x].position.x, mySpaceGlobals->enemies[x].position.y, 23, 23, mySpaceGlobals->enemies[x].rotated_sprite, enemy_palette);
+		}
+	}
 }
 
 void render(struct SpaceGlobals *mySpaceGlobals)
@@ -371,7 +367,7 @@ void render(struct SpaceGlobals *mySpaceGlobals)
 		}
 
 		renderStars(mySpaceGlobals);
-//		renderEnemies(mySpaceGlobals);
+		renderEnemies(mySpaceGlobals);
 		renderShip(mySpaceGlobals);
 		renderTexts(mySpaceGlobals);
 
@@ -454,39 +450,36 @@ void moveBullets(struct SpaceGlobals *mySpaceGlobals)
 		
 	}
 	
-//	for (x=0; x<100; x++)
-//	{
-//		if (mySpaceGlobals->enemies[x].position.active == 1)
-//		{
-//			mySpaceGlobals->enemies[x].position.x += mySpaceGlobals->enemies[x].position.m_x;
-//			mySpaceGlobals->enemies[x].position.y += mySpaceGlobals->enemies[x].position.m_y;
-//						
-//			if (mySpaceGlobals->enemies[x].position.x > xMaxBoundry ||
-//				mySpaceGlobals->enemies[x].position.x < xMinBoundry ||
-//				mySpaceGlobals->enemies[x].position.y > yMaxBoundry ||
-//				mySpaceGlobals->enemies[x].position.y < yMinBoundry + 20)
-//				mySpaceGlobals->enemies[x].position.active = 0;
-//			
-//			// rotate the enemy slowly
-//			mySpaceGlobals->enemies[x].angle += 0.02f;
-//			if (mySpaceGlobals->enemies[x].angle > 6.28318530f)
-//				mySpaceGlobals->enemies[x].angle = 0.0f;
-//			
-////			int targetAngle = mySpaceGlobals->enemies[x].angle;
-//						
-//			// TODO: the below crashes... with angle instead of 0
-//			makeRotationMatrix(mySpaceGlobals->enemies[x].angle, 23, mySpaceGlobals->enemy, mySpaceGlobals->enemies[x].rotated_sprite, 9);
-////			makeScaleMatrix(3, 23, mySpaceGlobals->enemy, mySpaceGlobals->enemies[x].rotated_sprite, 9);
-//
-//			mySpaceGlobals->invalid = 1;
-//		}
-//	}
+	for (x=0; x<10; x++)
+	{
+		if (mySpaceGlobals->enemies[x].position.active == 1)
+		{
+			mySpaceGlobals->enemies[x].position.x += mySpaceGlobals->enemies[x].position.m_x;
+			mySpaceGlobals->enemies[x].position.y += mySpaceGlobals->enemies[x].position.m_y;
+						
+			if (mySpaceGlobals->enemies[x].position.x > xMaxBoundry ||
+				mySpaceGlobals->enemies[x].position.x < xMinBoundry ||
+				mySpaceGlobals->enemies[x].position.y > yMaxBoundry ||
+				mySpaceGlobals->enemies[x].position.y < yMinBoundry + 20)
+				mySpaceGlobals->enemies[x].position.active = 0;
+			
+			// rotate the enemy slowly
+			mySpaceGlobals->enemies[x].angle += 0.02f;
+			if (mySpaceGlobals->enemies[x].angle > 6.28318530f)
+				mySpaceGlobals->enemies[x].angle = 0.0f;
+									
+			// TODO: the below crashes... with angle instead of 0
+			makeRotationMatrix(mySpaceGlobals->enemies[x].angle, 23, mySpaceGlobals->enemy, mySpaceGlobals->enemies[x].rotated_sprite, 9);
+
+			mySpaceGlobals->invalid = 1;
+		}
+	}
 }
 					
 void renderTexts(struct SpaceGlobals *mySpaceGlobals)
 {
 	fillRect(mySpaceGlobals->graphics, 0, 0, xMaxBoundry, 20, 0, 0, 0);
-
+	
 	char score[255];
 	if (mySpaceGlobals->dontKeepTrackOfScore == 1)
 		snprintf(score, 255, "Score: N/A");
@@ -549,18 +542,14 @@ void initGameState(struct SpaceGlobals *mySpaceGlobals)
 	{
 		mySpaceGlobals->bullets[x].active = 0;
 	}
-//	
-	// init x and y pos of player
-	mySpaceGlobals->p1X =  40;
-	mySpaceGlobals->p1Y = 150;
-//	
-//	// init enemies
-//	for (x=0; x<100; x++)
-//	{
-//		mySpaceGlobals->enemies[x].position.active = 0;
+	
+	// init enemies
+	for (x=0; x<10; x++)
+	{
+		mySpaceGlobals->enemies[x].position.active = 0;
 //		mySpaceGlobals->enemies[x].angle = 3.14f;
 //		makeRotationMatrix(0, 23, mySpaceGlobals->enemy, mySpaceGlobals->enemies[x].rotated_sprite, 9);
-//	}
+	}
 
 }
 
@@ -640,14 +629,14 @@ void drawMenuCursor(struct SpaceGlobals *mySpaceGlobals)
 
 void doMenuAction(struct SpaceGlobals *mySpaceGlobals)
 {
-	// if we've seen the A button not being pressed
-	if (!(mySpaceGlobals->button & BUTTON_A))
+	// if we've seen the A button and B button not being pressed
+	if (!(mySpaceGlobals->button & BUTTON_A) && !(mySpaceGlobals->button & BUTTON_B))
 	{
 		mySpaceGlobals->allowInput = 1;
 	}
 
 	// title screen and B was pressed, exit fully
-	if (mySpaceGlobals->state == 1 && mySpaceGlobals->button & BUTTON_B)
+	if (mySpaceGlobals->state == 1 && mySpaceGlobals->button & BUTTON_B && mySpaceGlobals->allowInput)
 	{
 		mySpaceGlobals->quit = 1;
 	}
@@ -940,19 +929,19 @@ void addNewEnemies(struct SpaceGlobals *mySpaceGlobals)
 		theta = atan2(xdif, ydif) - M_PI;
 	}
 		
-//	int xx;
-//	for (xx=0; xx<enemyCount; xx++)
-//	{
-//		if (mySpaceGlobals->enemies[xx].position.active == 0)
-//		{
-//			mySpaceGlobals->enemies[xx].position.x = startx;
-//			mySpaceGlobals->enemies[xx].position.y = starty;
-//			mySpaceGlobals->enemies[xx].position.m_x = speed*sin(theta); // speed is the desired enemy speed 
-//			mySpaceGlobals->enemies[xx].position.m_y = speed*cos(theta); // we have to solve for the hypotenuese 
-//			mySpaceGlobals->enemies[xx].position.active = 1;
-//			break;
-//		}
-//	}
+	int xx;
+	for (xx=0; xx<enemyCount; xx++)
+	{
+		if (mySpaceGlobals->enemies[xx].position.active == 0)
+		{
+			mySpaceGlobals->enemies[xx].position.x = startx;
+			mySpaceGlobals->enemies[xx].position.y = starty;
+			mySpaceGlobals->enemies[xx].position.m_x = speed*sin(theta); // speed is the desired enemy speed 
+			mySpaceGlobals->enemies[xx].position.m_y = speed*cos(theta); // we have to solve for the hypotenuese 
+			mySpaceGlobals->enemies[xx].position.active = 1;
+			break;
+		}
+	}
 }
 
 void totallyRefreshState(struct SpaceGlobals *mySpaceGlobals)
@@ -993,12 +982,12 @@ void displayGameOver(struct SpaceGlobals *mySpaceGlobals)
 	
 		
 		char resume[255];
-		snprintf(resume, 255, "Try  Again");
+		snprintf(resume, 255, "Try Again");
 		char quit[255];
 		snprintf(quit, 255, "Quit");
 		
-		drawString(mySpaceGlobals->graphics, 25, 12, resume);
-		drawString(mySpaceGlobals->graphics, 28, 13, quit);
+		drawString(mySpaceGlobals->graphics, 25, 13, resume);
+		drawString(mySpaceGlobals->graphics, 28, 14, quit);
 		
 		drawMenuCursor(mySpaceGlobals);
 		

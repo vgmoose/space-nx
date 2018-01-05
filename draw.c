@@ -62,7 +62,7 @@ void drawString(struct Graphics* g, int xi, int yi, char * string)
 					if (bitmap[x] & 1 << y)
 						putAPixel(g, xi+y+i*8, yi+x, 0xff, 0xff, 0xff);
 				}
-				printf("\n");
+//				printf("\n");
 			}
 		}
 	}
@@ -70,7 +70,6 @@ void drawString(struct Graphics* g, int xi, int yi, char * string)
 
 void fillScreen(struct Graphics* gr, char r,char g,char b,char a)
 {	
-	printf("SDL thing\n");
 	SDL_FillRect(gr->window_surface, NULL, SDL_MapRGBA(gr->window_surface->format, b, g, r, a));
 }
 
@@ -115,7 +114,7 @@ void drawBitmap(struct Graphics* gr, int ox, int oy, int width, int height, void
 			char g = color[1];
 			char b = color[0];
 			
-//			// transparent pixels
+			// transparent pixels
 			if (r == 0x27 && g == 0x27 && b == 0x27)
 			{
 				continue;
