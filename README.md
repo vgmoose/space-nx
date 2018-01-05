@@ -1,7 +1,7 @@
 ## Space Game NX
 This is a WIP port of [Space Game](https://github.com/vgmoose/space) to the Switch, using libtransistor.
 
-Right now the game can be started and the ship controlled, but there's no enemies, weapons, or music.
+The game is currently fully playable, but enemies are limited to 10 on screen at once, and some Switch-specific featuers are planned.
 
 ### Compiling
 #### For Switch
