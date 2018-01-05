@@ -3,6 +3,8 @@
 
 #include <SDL2/SDL.h>
 
+#define MAX_ENEMIES 60
+
 //Using modified version of draw to render at twice the scale to improve framerate
 
 struct Graphics {
@@ -73,7 +75,7 @@ struct SpaceGlobals{
 	struct Pixel stars[200];
 	
 	// the location of enemies
-	struct Enemy enemies[10];
+	struct Enemy enemies[MAX_ENEMIES];
 
 	int renderResetFlag;
 	int invalid;

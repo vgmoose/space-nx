@@ -165,7 +165,7 @@ void handleCollisions(struct SpaceGlobals * mySpaceGlobals)
 	
 		// check enemies if they collide with the player or any of the 20 active bullets
 		int x;
-		for (x=0; x<10; x++)
+		for (x=0; x<MAX_ENEMIES; x++)
 		{
 			if (mySpaceGlobals->enemies[x].position.active == 1)
 			{
@@ -250,7 +250,7 @@ void makeScaleMatrix(int frame, int width, void *orig, void *targ, int transInde
 void handleExplosions(struct SpaceGlobals* mySpaceGlobals)
 {
 	int x;
-	for (x=0; x<10; x++)
+	for (x=0; x<MAX_ENEMIES; x++)
 	{
 		if (mySpaceGlobals->enemies[x].position.active > 1)
 		{
@@ -344,7 +344,7 @@ void renderEnemies(struct SpaceGlobals *mySpaceGlobals)
 	}
 	
 	// for all active enemies, advance them
-	for (x=0; x<10; x++) // up to 100 enemies at once
+	for (x=0; x<MAX_ENEMIES; x++) // up to 100 enemies at once
 	{
 		if (mySpaceGlobals->enemies[x].position.active >= 1)
 		{
@@ -450,7 +450,7 @@ void moveBullets(struct SpaceGlobals *mySpaceGlobals)
 		
 	}
 	
-	for (x=0; x<10; x++)
+	for (x=0; x<MAX_ENEMIES; x++)
 	{
 		if (mySpaceGlobals->enemies[x].position.active == 1)
 		{
@@ -544,7 +544,7 @@ void initGameState(struct SpaceGlobals *mySpaceGlobals)
 	}
 	
 	// init enemies
-	for (x=0; x<10; x++)
+	for (x=0; x<MAX_ENEMIES; x++)
 	{
 		mySpaceGlobals->enemies[x].position.active = 0;
 //		mySpaceGlobals->enemies[x].angle = 3.14f;
@@ -588,8 +588,8 @@ void displayTitle(struct SpaceGlobals * mySpaceGlobals)
 		char credits[255];
 		snprintf(credits, 255, "by vgmoose");
 
-//		char musiccredits[255];
-//		snprintf(musiccredits, 255, "~*cruise*~ by (T-T)b");
+		char musiccredits[255];
+		snprintf(musiccredits, 255, "~*cruise*~ by (T-T)b");
 		
 		char license[255];
 		snprintf(license, 255, "MIT License");
