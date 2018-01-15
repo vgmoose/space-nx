@@ -7,13 +7,16 @@ OBJ := draw.o space.o program.o trigmath.o images.o input.o
 
 include $(LIBTRANSISTOR_HOME)/libtransistor.mk
 
-all: $(PROGRAM).nro
+all: $(PROGRAM).nso $(PROGRAM).nro
 
 %.o: %.c
 	$(CC) $(CC_FLAGS) -Wno-pointer-arith -c -o $@ $<
 
 %.o: %.S
 	$(AS) $(AS_FLAGS) $< -filetype=obj -o $@
+
+$(PROGRAM).nso.so: ${OBJ} $(LIBTRANSITOR_NSO_LIB) $(LIBTRANSISTOR_COMMON_LIBS)
+	$(LD) $(LD_FLAGS) -lm -o $@ ${OBJ} $(LIBTRANSISTOR_NSO_LDFLAGS)
 
 $(PROGRAM).nro.so: ${OBJ} $(LIBTRANSITOR_NRO_LIB) $(LIBTRANSISTOR_COMMON_LIBS)
 	$(LD) $(LD_FLAGS) -lm -o $@ ${OBJ} $(LIBTRANSISTOR_NRO_LDFLAGS)
