@@ -13,10 +13,10 @@ make
 cd ..
 ```
 
-Then export an environment variable pointing to your libtransistor build, and run `make switch`:
+Then export an environment variable pointing to your libtransistor build, and run `make -f Makefile.switch`:
 ```
 export LIBTRANSISTOR_HOME=./libtransistor
-make switch
+make -f Makefile.switch
 ```
 
 A `spacenx.nro` file will be produced, which can be sent to the Switch with ace_loader.
