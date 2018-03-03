@@ -1,5 +1,4 @@
 #include <time.h>
-#include<SDL2/SDL.h>
 
 #include "program.h"
 #include "trigmath.h"
@@ -14,18 +13,23 @@ void init(struct Graphics* g)
 		printf("SDL init failed: %s\n", SDL_GetError());
 		return;
 	}
-
 	printf("initialized SDL\n");
 	
-	g->window = SDL_CreateWindow("n/a", SDL_WINDOWPOS_UNDEFINED, SDL_WINDOWPOS_UNDEFINED, 1280, 720, SDL_WINDOW_SHOWN);
-	if(g->window == NULL) {
-		printf("window could not be created: %s\n", SDL_GetError());
-		return;
-	}
-
-	printf("created window\n");
+	#if defined(__SDL2__)
 	
-	g->window_surface = SDL_GetWindowSurface(g->window);
+		g->window = SDL_CreateWindow("n/a", SDL_WINDOWPOS_UNDEFINED, SDL_WINDOWPOS_UNDEFINED, 1280, 720, SDL_WINDOW_SHOWN);
+		if(g->window == NULL) {
+			printf("window could not be created: %s\n", SDL_GetError());
+			return;
+		}
+
+		printf("created window\n");
+		g->window_surface = SDL_GetWindowSurface(g->window);
+	#else
+		SDL_Init(SDL_INIT_VIDEO);
+		g->window_surface = SDL_SetVideoMode(1280,720, 16, SDL_FULLSCREEN);
+	#endif
+	
 
 	printf("got window surface\n");
 }
@@ -34,7 +38,9 @@ void deinit(struct Graphics* g)
 {
 	SDL_Delay(10);
 
+	#if defined(__SDL2__)
 	SDL_DestroyWindow(g->window);
+	#endif
 
 	SDL_Quit();
 }

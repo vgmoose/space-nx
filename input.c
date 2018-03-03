@@ -1,29 +1,28 @@
 #include "input.h"
 
-#if defined(LINUX) || defined(__APPLE__)
-	#include <SDL2/SDL.h>
-#else // switch
+#if defined(__SWITCH__) && !defined(__LIBNX__)
 	#include<libtransistor/nx.h>
+#elif defined(__SDL2__)	// just PC
+	#include <SDL2/SDL.h>
+#else
+	#include <SDL/SDL.h>
 #endif
 
 void PADInit()
 {
-	#if defined(LINUX) || defined(__APPLE__)
-	#else // switch
+	#if defined(__SWITCH__) && !defined(__LIBNX__)
 		hid_init();
 	#endif
 }
 
 void PADDestroy()
 {
-	#if defined(LINUX) || defined(__APPLE__)
-	#else // switch
+	#if defined(__SWITCH__) && !defined(__LIBNX__) // switch
 		hid_finalize();
 	#endif
 }
 
-#if defined(LINUX) || defined(__APPLE__)
-#else // switch
+#if defined(__SWITCH__) && !defined(__LIBNX__) // switch
 static void readInputInternal(struct PADData* data, hid_controller_state_entry_t ent)
 {
 	// process inputs
@@ -55,7 +54,24 @@ void PADRead(struct PADData* data)
 	// reset buttons
 	data->btns_h = 0b00000000;
 	
-	#if defined(LINUX) || defined(__APPLE__)
+	#if defined(__SWITCH__) && !defined(__LIBNX__)
+		data->lstick_x = 0;
+		data->lstick_y = 0;
+		data->rstick_x = 0;
+		data->rstick_y = 0;
+
+		// scan for controllers (main unit or 1P joycons detached)
+		hid_controller_t* num = hid_get_shared_memory()->controllers;		// joycons detached
+		hid_controller_t* num8 = hid_get_shared_memory()->controllers + 8;	// main unit
+
+		hid_controller_state_entry_t ent = num->main.entries[num->main.latest_idx];
+		hid_controller_state_entry_t ent8 = num8->main.entries[num8->main.latest_idx];
+	
+		// process inputs
+		readInputInternal(data, ent);
+		readInputInternal(data, ent8);
+	
+	#else // libtransistor
 		SDL_Event event;
 		SDL_PollEvent(&event);
 	
@@ -79,23 +95,6 @@ void PADRead(struct PADData* data)
 			data->rstick_x = -1*(event.key.keysym.sym == SDLK_w) + (event.key.keysym.sym == SDLK_s);
 			data->rstick_y = -1*(event.key.keysym.sym == SDLK_a) + (event.key.keysym.sym == SDLK_d);
 		}
-	
-	#else // switch
-		data->lstick_x = 0;
-		data->lstick_y = 0;
-		data->rstick_x = 0;
-		data->rstick_y = 0;
-
-		// scan for controllers (main unit or 1P joycons detached)
-		hid_controller_t* num = hid_get_shared_memory()->controllers;		// joycons detached
-		hid_controller_t* num8 = hid_get_shared_memory()->controllers + 8;	// main unit
-
-		hid_controller_state_entry_t ent = num->main.entries[num->main.latest_idx];
-		hid_controller_state_entry_t ent8 = num8->main.entries[num8->main.latest_idx];
-
-		// process inputs
-		readInputInternal(data, ent);
-		readInputInternal(data, ent8);
 
 	#endif
 }

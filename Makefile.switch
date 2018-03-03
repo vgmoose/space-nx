@@ -10,7 +10,7 @@ include $(LIBTRANSISTOR_HOME)/libtransistor.mk
 all: $(PROGRAM).nso $(PROGRAM).nro
 
 %.o: %.c
-	$(CC) $(CC_FLAGS) -Wno-pointer-arith -c -o $@ $<
+	$(CC) $(CC_FLAGS) -D__SDL2__=1 -D__LIBTRANSISTOR__=1 -Wno-pointer-arith -c -o $@ $<
 
 %.o: %.S
 	$(AS) $(AS_FLAGS) $< -filetype=obj -o $@

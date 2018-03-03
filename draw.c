@@ -8,7 +8,11 @@
 
 void flipBuffers(struct Graphics* g)
 {
-        SDL_UpdateWindowSurface(g->window);
+	#if defined(__SDL2__)
+		SDL_UpdateWindowSurface(g->window);
+	#else
+		SDL_Flip(g->window_surface);
+	#endif
 }
 
 /**
@@ -23,19 +27,13 @@ void putAPixel(struct Graphics* gr, int x, int y, int r, int g, int b)
 	x *= 2;
 	y *= 2;
 
-	int ax, ay, az;
-	for (ax=0; ax<2; ax++)
-		for (ay=0; ay<2; ay++)
-			for (az=0; az<2; az++)
-			{
-				SDL_Rect rect;
-				rect.x = x*1.5;
-				rect.y = y*1.5;
-				rect.w = 3;
-				rect.h = 3;
+	SDL_Rect rect;
+	rect.x = x*1.5;
+	rect.y = y*1.5;
+	rect.w = 3;
+	rect.h = 3;
 
-				SDL_FillRect(gr->window_surface, &rect, SDL_MapRGBA(gr->window_surface->format, b, g, r, 0xFF));
-			}
+	SDL_FillRect(gr->window_surface, &rect, SDL_MapRGBA(gr->window_surface->format, b, g, r, 0xFF));
 }
 
 void drawString(struct Graphics* g, int xi, int yi, char * string)

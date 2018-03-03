@@ -1,0 +1,21 @@
+build:
+	gcc -std=gnu11 *.c -lSDL -lSDLmain -framework Cocoa -lm -o spacenx
+	# clang *.c -lSDL2 -lm -o spacenx
+
+debug:
+	clang -g *.c -lSDL -lm -o spacenx
+
+sdl2:
+	clang -g *.c -lSDL2 -D__SDL2__=1 -lm -o spacenx
+
+switch:
+	make LLVM_POSTFIX=-5.0 LD=ld.lld-5.0 -f Makefile.switch
+
+run:
+	./spacenx
+
+drun:
+	gdb spacenx
+	
+clean:
+	make -f Makefile.switch clean

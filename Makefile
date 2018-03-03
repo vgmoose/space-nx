@@ -1,17 +1,5 @@
-build:
-	clang *.c -lSDL2 -lm -o spacenx
+all:
+	@echo "Hi! You should invoke one of the following:\n\tmake -f Makefile.pc\t\t# build for computer (SDL1)\n\tmake -f Makefile.pc sdl2\t# build for computer (SDL2)\n\tmake -f Makefile.switch\t\t# use libtransistor\n\tmake -f Makefile.nx\t\t# use libnx"
 
-debug:
-	clang -g *.c -lSDL2 -lm -o spacenx
-
-switch:
-	make LLVM_POSTFIX=-5.0 LD=ld.lld-5.0 -f Makefile.switch
-
-run:
-	./spacenx
-
-drun:
-	gdb spacenx
-	
 clean:
-	make -f Makefile.switch clean
+	rm -rf build *.o *.nro spacenx

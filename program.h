@@ -1,14 +1,21 @@
 #ifndef PROGRAM_H
 #define PROGRAM_H
 
+#if defined(__SDL2__)
+// libtransistor and sdl2
 #include <SDL2/SDL.h>
+#else
+#include <SDL/SDL.h>
+#endif
 
 #define MAX_ENEMIES 60
 
 //Using modified version of draw to render at twice the scale to improve framerate
 
 struct Graphics {
+	#if defined(__SDL2__)
 	SDL_Window* window;
+	#endif
 	SDL_Surface* window_surface;
 };
 
