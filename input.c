@@ -82,18 +82,33 @@ void PADRead(struct PADData* data)
 		
 		if (event.type == SDL_KEYDOWN)
 		{
-			data->btns_h |= ((event.key.keysym.sym == SDLK_RETURN)?		BUTTON_A : 0);
-			data->btns_h |= ((event.key.keysym.sym == SDLK_BACKSPACE)?		BUTTON_B : 0);
-			data->btns_h |= ((event.key.keysym.sym == SDLK_UP)?		BUTTON_UP : 0);
-			data->btns_h |= ((event.key.keysym.sym == SDLK_DOWN)?		BUTTON_DOWN : 0);
-			data->btns_h |= ((event.key.keysym.sym == SDLK_LEFT)?		BUTTON_LEFT : 0);
-			data->btns_h |= ((event.key.keysym.sym == SDLK_RIGHT)?		BUTTON_RIGHT : 0);
-			data->btns_h |= ((event.key.keysym.sym == SDLK_SPACE)?		BUTTON_PLUS : 0);
-			data->btns_h |= ((event.key.keysym.sym == SDLK_DELETE)?		BUTTON_MINUS : 0);
-			
-			// update stick values (between -1 and 1 for each)
-			data->rstick_x = -1*(event.key.keysym.sym == SDLK_w) + (event.key.keysym.sym == SDLK_s);
-			data->rstick_y = -1*(event.key.keysym.sym == SDLK_a) + (event.key.keysym.sym == SDLK_d);
+			#if !defined(__SWITCH__)
+				data->btns_h |= ((event.key.keysym.sym == SDLK_RETURN)?		BUTTON_A : 0);
+				data->btns_h |= ((event.key.keysym.sym == SDLK_BACKSPACE)?		BUTTON_B : 0);
+				data->btns_h |= ((event.key.keysym.sym == SDLK_UP)?		BUTTON_UP : 0);
+				data->btns_h |= ((event.key.keysym.sym == SDLK_DOWN)?		BUTTON_DOWN : 0);
+				data->btns_h |= ((event.key.keysym.sym == SDLK_LEFT)?		BUTTON_LEFT : 0);
+				data->btns_h |= ((event.key.keysym.sym == SDLK_RIGHT)?		BUTTON_RIGHT : 0);
+				data->btns_h |= ((event.key.keysym.sym == SDLK_SPACE)?		BUTTON_PLUS : 0);
+				data->btns_h |= ((event.key.keysym.sym == SDLK_DELETE)?		BUTTON_MINUS : 0);
+
+				// update stick values (between -1 and 1 for each)
+				data->rstick_x = -1*(event.key.keysym.sym == SDLK_w) + (event.key.keysym.sym == SDLK_s);
+				data->rstick_y = -1*(event.key.keysym.sym == SDLK_a) + (event.key.keysym.sym == SDLK_d);
+			#else
+				data->btns_h |= ((event.key.keysym.sym == SDLK_a)?		BUTTON_A : 0);
+				data->btns_h |= ((event.key.keysym.sym == SDLK_b)?		BUTTON_B : 0);
+				data->btns_h |= ((event.key.keysym.sym == SDLK_UP)?		BUTTON_UP : 0);
+				data->btns_h |= ((event.key.keysym.sym == SDLK_DOWN)?		BUTTON_DOWN : 0);
+				data->btns_h |= ((event.key.keysym.sym == SDLK_LEFT)?		BUTTON_LEFT : 0);
+				data->btns_h |= ((event.key.keysym.sym == SDLK_RIGHT)?		BUTTON_RIGHT : 0);
+				data->btns_h |= ((event.key.keysym.sym == SDLK_PLUS)?		BUTTON_PLUS : 0);
+				data->btns_h |= ((event.key.keysym.sym == SDLK_MINUS)?		BUTTON_MINUS : 0);
+
+				// update stick values (between -1 and 1 for each)
+//				data->rstick_x = -1*(event.key.keysym.sym == SDLK_w) + (event.key.keysym.sym == SDLK_s);
+//				data->rstick_y = -1*(event.key.keysym.sym == SDLK_a) + (event.key.keysym.sym == SDLK_d);
+			#endif
 		}
 
 	#endif

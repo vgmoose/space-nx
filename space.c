@@ -498,7 +498,11 @@ void renderTexts(struct SpaceGlobals *mySpaceGlobals)
 	if (mySpaceGlobals->displayHowToPlay)
 	{
 		char nag[255];
+		#if defined(__SDL2__)
 		snprintf(nag, 255, "Use the right joystick to rapid fire!");
+		#else
+		snprintf(nag, 255, "No firing in this version, watch out!");
+		#endif
 		drawString(mySpaceGlobals->graphics, 17, 17, nag);
 	}
 			
