@@ -3,6 +3,8 @@ This is a port of [Space Game](https://github.com/vgmoose/space) to the Nintendo
 
 The game is currently fully playable, but there's no music, enemy count is limited to compared to the Wii U version, and some Switch-specific features are planned.
 
+For a more simple SDL2 switch example, you can see [sdl-hello-world](https://github.com/vgmoose/sdl-hello-world).
+
 ### Compiling
 #### For Switch
 A `spacenx.nro` file will be produced, which can be used on the switch through hbmenu. It can be compiled using libtransistor or libnx.
