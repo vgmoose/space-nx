@@ -14,18 +14,19 @@ Clone and setup libtransistor, for more detail [see this post](https://reswitche
 make -f Makefile.switch
 ```
 
+Notice: currently libtransistor builds are crashing on 5.x. The latest release uses libnx for now.
+
 #### Using libnx
-Setup libnx and devkitarm64 [using the installer](http://switchbrew.org/index.php?title=Setting_up_Development_Environment). At the time of writing, this code uses devkitA64 a7. Then run the following command:
+Setup libnx and devkitarm64 [using the installer](http://switchbrew.org/index.php?title=Setting_up_Development_Environment). At the time of writing, this code uses devkitA64 r10-2. Then run the following command:
 
 ```
-make -f Makefile.nx
+make -f Makefile.libnx
 ```
 
 #### For PC
-This version of Space Game is ported to sdl and sdl2, so the same code can be compiled on the computer as well. Running `make -f Makefile.pc sdl2` creates a binary file that can be executed on the computer using the sdl2 library is required to compile it.
+This version of Space Game is ported to sdl2, so the same code can be compiled on the computer as well. Running `make -f Makefile.pc` creates a binary file that can be executed on the computer using the sdl2 library is required to compile it. It also plays using gamepad controls, so the keyboard won't work to control it.
 
 `make -f Makefile.pc` creates a binary file using the sdl1 library instead.
 
 ### License
 This program is licensed under [the MIT license](https://opensource.org/licenses/MIT), see the original repo for more information.
-
