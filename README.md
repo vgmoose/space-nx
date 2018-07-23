@@ -26,7 +26,5 @@ make -f Makefile.libnx
 #### For PC
 This version of Space Game is ported to sdl2, so the same code can be compiled on the computer as well. Running `make -f Makefile.pc` creates a binary file that can be executed on the computer using the sdl2 library is required to compile it. It also plays using gamepad controls, so the keyboard won't work to control it.
 
-`make -f Makefile.pc` creates a binary file using the sdl1 library instead.
-
 ### License
 This program is licensed under [the MIT license](https://opensource.org/licenses/MIT), see the original repo for more information.

@@ -26,11 +26,11 @@ void init(struct Graphics* g)
 
 	printf("got window surface\n");
 
-	for (int i = 0; i < 2; i++) {
+	for (int i = 0; i < SDL_NumJoysticks(); i++) {
 		if (SDL_JoystickOpen(i) == NULL) {
 				printf("SDL_JoystickOpen: %s\n", SDL_GetError());
 				SDL_Quit();
-				return -1;
+				return;
 		}
 }
 
