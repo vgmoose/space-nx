@@ -6,6 +6,8 @@
 
 #define MAX_ENEMIES 60
 
+int program_start();
+
 //Using modified version of draw to render at twice the scale to improve framerate
 
 struct Graphics {

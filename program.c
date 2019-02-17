@@ -45,7 +45,7 @@ void deinit(struct Graphics* g)
 	SDL_Quit();
 }
 
-int main(int argc, char *argv[])
+int program_start()
 {
 	printf("Very first main entered\n");
 	struct Graphics graphics = {};
@@ -197,4 +197,6 @@ int main(int argc, char *argv[])
 	deinit(&graphics);
 	PADDestroy();
 	printf("Unloaded\n");
+
+  return 0;
 }

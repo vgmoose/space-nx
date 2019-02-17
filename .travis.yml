@@ -1,4 +1,4 @@
-language: cpp
+language: c
 sudo: required
 
 os: linux
@@ -13,7 +13,6 @@ matrix:
   include:
     - env: PLATFORM=pc
     - env: PLATFORM=libnx
-    - env: PLATFORM=switch
     - env: PLATFORM=wiiu
 
 addons:
