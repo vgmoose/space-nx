@@ -1,4 +1,4 @@
-## Space Game NX
+## Space Game NX [![Build status](https://api.travis-ci.org/vgmoose/spacenx.svg?branch=master)](https://travis-ci.org/vgmoose/spacenx)
 This is a port of [Space Game](https://github.com/vgmoose/space) to the Nintendo Switch.
 
 The game is currently fully playable, but there's no music, enemy count is limited to compared to the Wii U version, and some Switch-specific features are planned.
