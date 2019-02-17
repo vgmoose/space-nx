@@ -1,6 +1,6 @@
 build:
 	gcc -c *.c -lSDL2 -D__SDL2__=1 -lm
-	g++ *.cpp -lSDL2 -D__SDL2__=1 -lm *o -o spacenx
+	g++ *.cpp *.o -lSDL2 -D__SDL2__=1 -lm -o spacenx
 
 run:
 	./spacenx
