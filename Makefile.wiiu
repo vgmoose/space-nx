@@ -1,9 +1,6 @@
 BASEDIR	:= $(dir $(firstword $(MAKEFILE_LIST)))
 VPATH	:= $(BASEDIR)
 
-GUI :=		libs/hb-appstore/gui/
-GET :=		libs/hb-appstore/libs/get/src
-
 #---------------------------------------------------------------------------------
 # TARGET is the name of the output
 # BUILD is the directory where object files & intermediate files will be placed
@@ -50,8 +47,7 @@ include $(WUT_ROOT)/share/wut.mk
 #---------------------------------------------------------------------------------
 # portlibs
 #---------------------------------------------------------------------------------
-PORTLIBS	:=	$(DEVKITPRO)/portlibs/ppc
-PORTLIBS2	:=	$(DEVKITPRO)/portlibs/wiiu
+PORTLIBS	:=	$(DEVKITPRO)/portlibs/wiiu
 LDFLAGS		+=	-L$(PORTLIBS)/lib
 CFLAGS		+=	-I$(PORTLIBS)/include
 CXXFLAGS	+=	-I$(PORTLIBS)/include
