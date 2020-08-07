@@ -1,3 +1,11 @@
+# default this environment variable
+DEVKITPRO ?= /opt/devkitpro
+DEVKITPPC ?= $(DEVKITPRO)/devkitPPC
+WUT_ROOT ?= $(DEVKITPRO)/wut
+export DEVKITPRO
+export DEVKITPPC
+export WUT_ROOT
+
 BASEDIR	:= $(dir $(firstword $(MAKEFILE_LIST)))
 VPATH	:= $(BASEDIR)
 

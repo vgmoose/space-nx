@@ -1,28 +1,11 @@
-language: c
-sudo: required
-
-os: linux
-dist: xenial
-
-env:
-  global:
-    - DEVKITPRO=/opt/devkitpro
-    - WUT_ROOT=/opt/wut
-
+language: cpp
+services:
+  - docker
 matrix:
   include:
     - env: PLATFORM=pc
-    - env: PLATFORM=libnx
+    - env: PLATFORM=switch
     - env: PLATFORM=wiiu
-
-addons:
-  apt:
-    packages:
-      - git
-      - wget
-
-install:
-  - ./dependency_helper.sh
-
 script:
-  - make -f Makefile.${PLATFORM}
+  - docker run -v $(pwd):/code registry.gitlab.com/4tu/spheal
+               /bin/bash -c "cd /code && make -f Makefile.$PLATFORM"

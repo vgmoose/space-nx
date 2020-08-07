@@ -1,28 +1,16 @@
-## Space Game NX [![Build status](https://api.travis-ci.org/vgmoose/spacenx.svg?branch=master)](https://travis-ci.org/vgmoose/spacenx)
+## Space Game NX [![Build status](https://api.travis-ci.org/vgmoose/space-nx.svg?branch=master)](https://travis-ci.org/vgmoose/space-nx)
 This is a port of [Space Game](https://github.com/vgmoose/space) to the Nintendo Switch.
 
 The game is currently fully playable, but there's no music, enemy count is limited to compared to the Wii U version, and some Switch-specific features are planned.
 
-For a more simple SDL2 switch example, you can see [sdl-hello-world](https://github.com/vgmoose/sdl-hello-world).
-
 ### Compiling
 #### For Switch
-A `spacenx.nro` file will be produced, which can be used on the switch through hbmenu. It can be compiled using libtransistor or libnx.
+A `spacenx.nro` file will be produced, which can be used on the switch through hbmenu. It can be compiled using libnx.
 
-#### Using libtransistor
-Clone and setup libtransistor, for more detail [see this post](https://reswitchedweekly.github.io/Development-Setup/). Then run the following command:
+Setup libnx and devkitA64 [using the installer](http://switchbrew.org/index.php?title=Setting_up_Development_Environment). Then run the following command:
 
 ```
 make -f Makefile.switch
-```
-
-Notice: currently libtransistor builds are crashing on 5.x. The latest release uses libnx for now.
-
-#### Using libnx
-Setup libnx and devkitarm64 [using the installer](http://switchbrew.org/index.php?title=Setting_up_Development_Environment). At the time of writing, this code uses devkitA64 r10-2. Then run the following command:
-
-```
-make -f Makefile.libnx
 ```
 
 #### For PC
